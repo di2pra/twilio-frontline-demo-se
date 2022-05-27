@@ -47,13 +47,18 @@ const getCustomerProxyAddress = async (channelName: string) => {
 
   const setting = await Setting.get();
 
-  if (channelName === 'whatsapp') {
-    return `whatsapp:${setting.phoneNumberWA}`;
-  } else if (channelName === 'sms') {
-    return setting.phoneNumberSMS;
-  } else {
-    return setting.phoneNumberVoice;
+  if(setting) {
+    if (channelName === 'whatsapp') {
+      return `whatsapp:${setting.phoneNumberWA}`;
+    } else if (channelName === 'sms') {
+      return setting.phoneNumberSMS;
+    } else {
+      return setting.phoneNumberVoice;
+    }
   }
+
+  return '';
+
 };
 
 export default outgoingConversationCallbackHandler;
