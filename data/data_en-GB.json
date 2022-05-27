@@ -1,0 +1,79 @@
+{
+  "lang": "en-GB",
+  "setting": {
+    "pollyVoice": [
+      "Polly.Amy",
+      "Polly.Brian",
+      "Polly.Emma",
+      "Polly.Amy-Neural",
+      "Polly.Brian-Neural",
+      "Polly.Emma-Neural"
+    ],
+    "phoneNumberSMS": "+447361589764",
+    "phoneNumberWA": "+447361589764",
+    "phoneNumberVoice": "+447361589764"
+  },
+  "configuration": {
+    "selectedPollyVoice": "Polly.Amy",
+    "companyNameShort": "Twilio",
+    "companyNameLong": "Twilio",
+    "companyUrl": "https://twilio.com",
+    "welcomeKnownContact": "Good morning, welcome to {{companyNameLong}}, let me connect with your advisor.",
+    "welcomeUnknownContact": "Good morning, welcome to {{companyNameLong}}. let me connect you with our first agent available.",
+    "agentBusyAnswer": "Sorry, your advisor is busy, let me transfer the call to our contact center.",
+    "agentNotFoundAnswer": "Let me transfer the call to our contact center."
+  },
+  "templates": [
+    {
+      "display_name": "Openers",
+      "templates": [
+        {
+          "content": "Hello {{customerFirstname}} we have now processed your documents and would like to move you on to the next step. Drop me a message. {{agentFirstname}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "Hello {{customerFirstname}} we have a new product out which may be of interest to your business. Drop me a message. {{agentFirstname}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "Just to confirm I am on my way to your office. {{agentFirstname}}.",
+          "whatsappApproved": false
+        }
+      ]
+    },
+    {
+      "display_name": "Replies",
+      "templates": [
+        {
+          "content": "This has now been sent. {{agentFirstname}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "Our rates for any loan are 20% or 30% over $30,000. You can read more at {{companyUrl}}. {{agentFirstname}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "Just to confirm I am on my way to your office. {{agentFirstname}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "Would you like me to go over some options with you {{customerFirstname}}? {{agentFirstname}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "We have a secure drop box for documents. Can you attach and upload them here: {{companyUrl}}. {{agentFirstname}}",
+          "whatsappApproved": false
+        }
+      ]
+    },
+    {
+      "display_name": "Closing",
+      "templates": [
+        {
+          "content": "Happy to help, {{customerFirstname}}. If you have a moment could you leave a review about our interaction at this link: {{companyUrl}}. {{agentFirstname}}.",
+          "whatsappApproved": false
+        }
+      ]
+    }
+  ]
+}

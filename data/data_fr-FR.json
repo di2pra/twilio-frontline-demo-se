@@ -1,0 +1,57 @@
+{
+  "lang": "fr-FR",
+  "setting": {
+    "pollyVoice": [
+      "Polly.Celine",
+      "Polly.Lea",
+      "Polly.Mathieu",
+      "Polly.Lea-Neural"
+    ],
+    "phoneNumberSMS": "+33757593873",
+    "phoneNumberWA": "+33757593873",
+    "phoneNumberVoice": "+33757593873"
+  },
+  "configuration": {
+    "selectedPollyVoice": "Polly.Lea",
+    "companyNameShort": "Twilio",
+    "companyNameLong": "Twilio",
+    "companyUrl": "https://twilio.com",
+    "welcomeKnownContact": "Bonjour, bienvenue chez {{companyNameLong}}, je vous mets en relation avec votre conseiller.",
+    "welcomeUnknownContact": "Bonjour, bienvenue chez {{companyNameLong}}. Je vous redirige vers le premier conseiller disponible de notre centre d'appel.",
+    "agentBusyAnswer": "Votre conseiller est occupé, je vous redirige vers le centre d'appel.",
+    "agentNotFoundAnswer": "Je vous redirige vers le premier conseiller disponible de notre centre d'appel."
+  },
+  "templates": [
+    {
+      "display_name": "Démarrer une conversation",
+      "templates": [
+        {
+          "content": "Bonjour {{customerFirstname}}, je suis {{agentFirstname}} {{agentLastname}}, votre conseiller chez {{companyNameShort}}, je me permets de vous contacter pour qu''on puisse discuter de votre contrat. Envoyez moi un message dès que vous êtes disponible. Merci.",
+          "whatsappApproved": true
+        },
+        {
+          "content": "Bonjour {{customerFirstname}} nous avons traité vos documents, vous pouvez me contacter ici. {{agentFirstname}} de chez {{companyNameShort}}.",
+          "whatsappApproved": false
+        }
+      ]
+    },
+    {
+      "display_name": "Répondre à un message",
+      "templates": [
+        {
+          "content": "Toutes les réductions indiquées sont appliquées après signature. {{agentFirstname}} de chez {{companyNameShort}}.",
+          "whatsappApproved": false
+        }
+      ]
+    },
+    {
+      "display_name": "Clore une conversation",
+      "templates": [
+        {
+          "content": "Je vous remercie de m'avoir contacté, {{customerFirstname}}. Si vous avez d'autres questions, n'hésitez à me recontacter sur ce même numéro. {{agentFirstname}} de chez {{companyNameShort}}.",
+          "whatsappApproved": false
+        }
+      ]
+    }
+  ]
+}
