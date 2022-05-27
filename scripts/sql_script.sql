@@ -91,7 +91,6 @@ INSERT INTO public.language (lang, friendly_name, setting, configuration, templa
     }
   ]', '2022-05-20 14:31:14.951662+00', 'prajendirane@twilio.com');
 INSERT INTO public.language (lang, friendly_name, setting, configuration, template, updated_on, updated_by) VALUES ('en-GB', 'United Kingdom', '{
-  "lang": "en-GB",
   "pollyVoice": [
     "Polly.Amy",
     "Polly.Brian",

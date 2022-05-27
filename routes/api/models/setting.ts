@@ -16,7 +16,7 @@ export default class Setting {
     }
   };
 
-  static get: () => Promise<ISetting> = async () => {
+  static get: () => Promise<ISetting | null> = async () => {
     try {
       
       const redisClient = await Redis.getClient();

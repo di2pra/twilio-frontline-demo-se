@@ -13,7 +13,11 @@ export default class SettingController {
 
       const languages = await Language.getAll();
 
-      const selectedSetting = await Setting.get();
+      let selectedSetting = await Setting.get();
+
+      if(selectedSetting === null) {
+        selectedSetting = languages[0].setting;
+      }
 
       res.status(200).json({
         selectedSetting: selectedSetting,
