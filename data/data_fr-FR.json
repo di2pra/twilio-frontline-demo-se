@@ -26,7 +26,7 @@
       "display_name": "Démarrer une conversation",
       "templates": [
         {
-          "content": "Bonjour {{customerFirstname}}, je suis {{agentFirstname}} {{agentLastname}}, votre conseiller chez {{companyNameShort}}, je me permets de vous contacter pour qu''on puisse discuter de votre contrat. Envoyez moi un message dès que vous êtes disponible. Merci.",
+          "content": "Bonjour {{customerFirstname}}, je suis {{agentFirstname}} {{agentLastname}}, votre conseiller chez {{companyNameShort}}, je me permets de vous contacter pour qu'on puisse discuter de votre contrat. Envoyez moi un message dès que vous êtes disponible. Merci.",
           "whatsappApproved": true
         },
         {
@@ -40,6 +40,10 @@
       "templates": [
         {
           "content": "Toutes les réductions indiquées sont appliquées après signature. {{agentFirstname}} de chez {{companyNameShort}}.",
+          "whatsappApproved": false
+        },
+        {
+          "content": "Vous pouvez consulter vos droits sur notre site {{companyUrl}}",
           "whatsappApproved": false
         }
       ]
