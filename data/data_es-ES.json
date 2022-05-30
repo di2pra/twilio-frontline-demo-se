@@ -2,19 +2,17 @@
   "lang": "en-GB",
   "setting": {
     "pollyVoice": [
-      "Polly.Amy",
-      "Polly.Brian",
-      "Polly.Emma",
-      "Polly.Amy-Neural",
-      "Polly.Brian-Neural",
-      "Polly.Emma-Neural"
+      "Polly.Conchita",
+      "Polly.Enrique",
+      "Polly.Lucia",
+      "Polly.Lucia-Neural"
     ],
-    "phoneNumberSMS": "+447361589764",
-    "phoneNumberWA": "+447361589764",
-    "phoneNumberVoice": "+447361589764"
+    "phoneNumberSMS": "+34911650396",
+    "phoneNumberWA": "+34911650396",
+    "phoneNumberVoice": ""
   },
   "configuration": {
-    "selectedPollyVoice": "Polly.Amy",
+    "selectedPollyVoice": "Polly.Conchita",
     "companyNameShort": "Twilio",
     "companyNameLong": "Twilio",
     "companyUrl": "https://twilio.com",
