@@ -32,6 +32,10 @@
         {
           "content": "Bonjour {{customerFirstname}} nous avons traité vos documents, vous pouvez me contacter ici. {{agentFirstname}} de chez {{companyNameShort}}.",
           "whatsAppApproved": false
+        },
+        {
+          "content": "Bonjour {{customerFirstname}}, nous avons traité vos documents et aimerions poursuivre avec vous. Envoyez-moi un message. {{agentFirstname}}.",
+          "whatsAppApproved": true
         }
       ]
     },

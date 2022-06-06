@@ -77,7 +77,7 @@ export const findWorkerForCustomer = async (customerNumber: string): Promise<str
 
 export const getCustomersList = async (worker: string, pageSize: number, anchor: string, query: string | undefined) => {
 
-  let filterGroups : FilterGroup[] = [];
+  let filterGroups: FilterGroup[] = [];
 
   if (query) {
     filterGroups = [
@@ -102,7 +102,7 @@ export const getCustomersList = async (worker: string, pageSize: number, anchor:
     ]
   }
 
-  const publicObjectSearchRequest : PublicObjectSearchRequest = {
+  const publicObjectSearchRequest: PublicObjectSearchRequest = {
     filterGroups: filterGroups,
     sorts: [JSON.stringify([{ propertyName: 'lastmodifieddate', direction: 'ASCENDING' }])],
     properties: [
@@ -122,10 +122,31 @@ export const getCustomersList = async (worker: string, pageSize: number, anchor:
 
   const filteredOwner = ownerList.results.find((item) => item.email === worker);
 
-  let list = result.results.map((customer: any) => ({
-    display_name: `${customer.properties.firstname || ''} ${customer.properties.lastname || ''}`.trim(),
-    customer_id: customer.id
-  }));
+  let list = result.results.map((customer: any) => {
+
+    if (customer.properties.firstname === null && customer.properties.lastname === null) {
+      return {
+        display_name: '',
+        customer_id: customer.id
+      }
+    } else if (customer.properties.firstname === null && customer.properties.lastname !== null) {
+      return {
+        display_name: customer.properties.lastname,
+        customer_id: customer.id
+      }
+    } else if (customer.properties.firstname !== null && customer.properties.lastname === null) {
+      return {
+        display_name: customer.properties.firstname,
+        customer_id: customer.id
+      }
+    }
+
+    return {
+      display_name: `${customer.properties.firstname} ${customer.properties.lastname}`,
+      customer_id: customer.id
+    }
+
+  });
 
   if (filteredOwner) {
     list = result.results.filter((item) => item.properties.hubspot_owner_id === filteredOwner.id).map((customer: any) => ({
@@ -208,7 +229,7 @@ export const getCustomerByNumber = async (customerNumber: string): Promise<IFron
 
 };
 
-export const getOwnerByEmail = async (email: string) : Promise<PublicOwner | undefined> => {
+export const getOwnerByEmail = async (email: string): Promise<PublicOwner | undefined> => {
   const ownerList = await hubspotClient.crm.owners.ownersApi.getPage();
   return ownerList.results.find((item) => item.email === email);
 }
