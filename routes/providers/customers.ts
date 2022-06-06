@@ -122,50 +122,30 @@ export const getCustomersList = async (worker: string, pageSize: number, anchor:
 
   const filteredOwner = ownerList.results.find((item) => item.email === worker);
 
-  let list = result.results.map((customer: any) => {
+  let fileredList = result.results;
 
-    if (customer.properties.firstname === null && customer.properties.lastname === null) {
-      return {
-        display_name: '',
-        customer_id: customer.id
-      }
-    } else if (customer.properties.firstname === null && customer.properties.lastname !== null) {
-      return {
-        display_name: customer.properties.lastname,
-        customer_id: customer.id
-      }
-    } else if (customer.properties.firstname !== null && customer.properties.lastname === null) {
-      return {
-        display_name: customer.properties.firstname,
-        customer_id: customer.id
-      }
-    }
 
-    return {
-      display_name: `${customer.properties.firstname} ${customer.properties.lastname}`,
-      customer_id: customer.id
-    }
-
-  });
 
   if (filteredOwner) {
-    list = result.results.filter((item) => item.properties.hubspot_owner_id === filteredOwner.id).map((customer: any) => ({
-      display_name: `${customer.properties.firstname} ${customer.properties.lastname}`,
-      customer_id: customer.id
-    }));
+    fileredList = result.results.filter((item) => item.properties.hubspot_owner_id === filteredOwner.id);
   }
+
+  const formattedList = fileredList.map((customer: any) => ({
+    display_name: `${customer.properties.firstname || ''} ${customer.properties.lastname || ''}`.trim(),
+    customer_id: customer.id
+  }));
 
 
   if (!pageSize) {
-    return list
+    return formattedList
   }
 
   if (anchor) {
-    const lastIndex = list.findIndex((c: any) => String(c.customer_id) === String(anchor))
+    const lastIndex = formattedList.findIndex((c: any) => String(c.customer_id) === String(anchor))
     const nextIndex = lastIndex + 1
-    return list.slice(nextIndex, nextIndex + pageSize)
+    return formattedList.slice(nextIndex, nextIndex + pageSize)
   } else {
-    return list.slice(0, pageSize)
+    return formattedList.slice(0, pageSize)
   }
 };
 
@@ -203,9 +183,9 @@ export const getCustomerByNumber = async (customerNumber: string): Promise<IFron
 
       return {
         customer_id: customerData.id,
-        display_name: `${customerData.properties.firstname} ${customerData.properties.lastname}`,
-        firstname: customerData.properties.firstname,
-        lastname: customerData.properties.lastname,
+        display_name: `${customerData.properties.firstname || ''} ${customerData.properties.lastname || ''}`.trim(),
+        firstname: customerData.properties.firstname || '',
+        lastname: customerData.properties.lastname || '',
         channels: [
           { type: 'email', value: customerData.properties.email },
           { type: 'sms', value: customerData.properties.hs_calculated_phone_number },
@@ -268,7 +248,7 @@ export const getCustomerById = async (customerId: string): Promise<IFrontlineCus
 
       return {
         customer_id: customerData.id,
-        display_name: `${customerData.properties.firstname} ${customerData.properties.lastname}`,
+        display_name: `${customerData.properties.firstname || ''} ${customerData.properties.lastname || ''}`,
         firstname: customerData.properties.firstname,
         lastname: customerData.properties.lastname,
         channels: [
@@ -278,10 +258,10 @@ export const getCustomerById = async (customerId: string): Promise<IFrontlineCus
         ],
         details: {
           title: 'Commercial',
-          content: `${ownerData.firstName} ${ownerData.lastName}`
+          content: `${ownerData.firstName || ''} ${ownerData.lastName || ''}`.trim()
         },
         links: [
-          { type: 'Hubspot', value: `https://app-eu1.hubspot.com/contacts/${process.env.HUBSPOT_ENV_ID}/contact/${customerData.id}`, display_name: `Fiche de ${customerData.properties.firstname} ${customerData.properties.lastname}` },
+          { type: 'Hubspot', value: `https://app-eu1.hubspot.com/contacts/${process.env.HUBSPOT_ENV_ID}/contact/${customerData.id}`, display_name: `Fiche de ${customerData.properties.firstname || ''} ${customerData.properties.lastname || ''}`.trim() },
           { type: 'Commercial', value: `https://app-eu1.hubspot.com/contacts/${process.env.HUBSPOT_ENV_ID}/contact/${customerData.id}`, display_name: `${ownerData.firstName} ${ownerData.lastName}` }
         ],
         worker: ownerData.email,
