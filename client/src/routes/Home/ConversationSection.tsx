@@ -1,9 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Button, Card, Spinner, Table } from "react-bootstrap";
-import useApi from "../../../hooks/useApi";
-import { ClaimContext } from "../../../providers/ClaimProvider";
-import { UserContext } from "../../../SecureLayout";
-import { IConversation } from "../../../Types";
+import { Alert, Button, Card, Spinner, Table } from "react-bootstrap";
+import useApi from "../../hooks/useApi";
+import { ClaimContext } from "../../providers/ClaimProvider";
+import { UserContext } from "../../SecureLayout";
+import { IConversation } from "../../Types";
+import { MdDelete } from 'react-icons/md';
 
 const ConversationSection = () => {
 
@@ -53,6 +54,17 @@ const ConversationSection = () => {
     )
   }
 
+  if(conversationList.length === 0) {
+    return (
+      <Card className="mb-3">
+        <Card.Header as="h3">Conversations</Card.Header>
+        <Card.Body>
+          <Alert className="mb-0">No Conversation</Alert>
+        </Card.Body>
+      </Card>
+    )
+  }
+
   return (
     <Card className="mb-3">
       <Card.Header as="h3">Conversations</Card.Header>
@@ -80,7 +92,7 @@ const ConversationSection = () => {
           </tbody>
         </Table>
         {
-          (claim != null && claim.ended_at === null && (claim.user === loggedInUser?.email)) ? <Button variant="danger" onClick={deleteHandler}>Delete All</Button> : null
+          (claim != null && claim.ended_at === null && (claim.user === loggedInUser?.email)) ? <Button className="btn-with-icon" variant="danger" onClick={deleteHandler}><MdDelete /><span>Delete All</span></Button> : null
         }
       </Card.Body>
     </Card>

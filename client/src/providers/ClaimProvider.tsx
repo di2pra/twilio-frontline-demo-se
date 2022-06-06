@@ -11,7 +11,7 @@ export const ClaimContext = createContext<{
   claim: null
 });
 
-const ClaimProvider: FC = ({ children }) => {
+const ClaimProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { getClaim, addClaim, closeClaim } = useApi();
 

@@ -3,3 +3,11 @@ export const addCodeTag = (text: string) => {
     return `<code>${t1}</code>`
   });
 }
+
+export const getFlagEmoji = (countryCode : string) => {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char =>  127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}

@@ -27,11 +27,11 @@
       "templates": [
         {
           "content": "Bonjour {{customerFirstname}}, je suis {{agentFirstname}} {{agentLastname}}, votre conseiller chez {{companyNameShort}}, je me permets de vous contacter pour qu'on puisse discuter de votre contrat. Envoyez moi un message dès que vous êtes disponible. Merci.",
-          "whatsappApproved": true
+          "whatsAppApproved": true
         },
         {
           "content": "Bonjour {{customerFirstname}} nous avons traité vos documents, vous pouvez me contacter ici. {{agentFirstname}} de chez {{companyNameShort}}.",
-          "whatsappApproved": false
+          "whatsAppApproved": false
         }
       ]
     },
@@ -40,11 +40,11 @@
       "templates": [
         {
           "content": "Toutes les réductions indiquées sont appliquées après signature. {{agentFirstname}} de chez {{companyNameShort}}.",
-          "whatsappApproved": false
+          "whatsAppApproved": false
         },
         {
           "content": "Vous pouvez consulter vos droits sur notre site {{companyUrl}}",
-          "whatsappApproved": false
+          "whatsAppApproved": false
         }
       ]
     },
@@ -53,7 +53,7 @@
       "templates": [
         {
           "content": "Je vous remercie de m'avoir contacté, {{customerFirstname}}. Si vous avez d'autres questions, n'hésitez à me recontacter sur ce même numéro. {{agentFirstname}} de chez {{companyNameShort}}.",
-          "whatsappApproved": false
+          "whatsAppApproved": false
         }
       ]
     }

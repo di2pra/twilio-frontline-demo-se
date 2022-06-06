@@ -10,7 +10,7 @@ export const ConfigurationContext = createContext<{
   configuration: null
 });
 
-const ConfigurationProvider: FC = ({ children }) => {
+const ConfigurationProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { getConfiguration, postConfiguration } = useApi();
 

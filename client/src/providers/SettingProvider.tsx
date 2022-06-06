@@ -10,7 +10,7 @@ export const SettingContext = createContext<{
   setting: null
 });
 
-const SettingProvider: FC = ({ children }) => {
+const SettingProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { getSetting, postSetting } = useApi();
 

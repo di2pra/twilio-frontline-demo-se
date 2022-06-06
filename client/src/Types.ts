@@ -43,6 +43,6 @@ export interface ITemplate {
   display_name: string;
   templates: {
     content: string;
-    whatsappApproved: boolean;
+    whatsAppApproved: boolean;
   }[]
 }

@@ -133,7 +133,7 @@ const TemplateSection = () => {
           ...cat,
           templates: [...cat.templates, {
             content: "",
-            whatsappApproved: false
+            whatsAppApproved: false
           }]
         }
       }
@@ -192,7 +192,7 @@ const TemplateSection = () => {
                                 <td className="text-center">
                                   <Form.Group controlId={`cat-${catKey}-temp-wa-${tempKey}`}>
                                     <Form.Check type="switch">
-                                      <FormCheck.Input name={`cat-${catKey}-temp-wa-${tempKey}`} checked={Boolean(temp.whatsappApproved)} onChange={(e) => { handleOnChange(e, "temp_wa", catKey, tempKey) }} />
+                                      <FormCheck.Input name={`cat-${catKey}-temp-wa-${tempKey}`} checked={Boolean(temp.whatsAppApproved)} onChange={(e) => { handleOnChange(e, "temp_wa", catKey, tempKey) }} />
                                     </Form.Check>
                                   </Form.Group>
                                 </td>

@@ -25,3 +25,9 @@ $primary-color: #0263E0;
   }
 
 }
+
+.btn-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

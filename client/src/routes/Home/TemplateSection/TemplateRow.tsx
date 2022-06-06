@@ -3,11 +3,10 @@ import { ITemplate } from "../../../Types";
 import sanitizeHtml from 'sanitize-html';
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 
-type Props = {
-  templateCategory: ITemplate
-}
 
-const TemplateRow = ({ templateCategory }: Props) => {
+const TemplateRow = ({ templateCategory }: {
+  templateCategory: ITemplate
+}) => {
 
   return (
     <Row>
@@ -35,7 +34,7 @@ const TemplateRow = ({ templateCategory }: Props) => {
                         <td style={{ 'verticalAlign': 'middle' }}>
                           <p className="mb-0" dangerouslySetInnerHTML={{ __html: sanitizeHtml(newContent) }} />
                         </td>
-                        <td className={item.whatsappApproved ? 'text-center text-success' : 'text-center text-danger'} style={{ 'verticalAlign': 'middle', fontSize: '1.5rem' }}>{item.whatsappApproved ? <AiOutlineCheckCircle /> : <AiOutlineCloseCircle />}</td>
+                        <td className={item.whatsAppApproved ? 'text-center text-success' : 'text-center text-danger'} style={{ 'verticalAlign': 'middle', fontSize: '1.5rem' }}>{item.whatsAppApproved ? <AiOutlineCheckCircle /> : <AiOutlineCloseCircle />}</td>
                       </tr>
                     )
                   })

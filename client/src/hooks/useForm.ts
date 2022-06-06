@@ -93,7 +93,7 @@ const useForm = (
 
   // Used to handle every changes in every input
   const handleOnChange = useCallback(
-    event => {
+    (event : any) => {
 
       const name = event.target.name;
       let value = event.target.value;

@@ -60,7 +60,7 @@ export default class ClaimController {
 
   };
 
-  validateClaim = async (_: Request, res: Response, next: NextFunction) => {
+  validateClaim = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 

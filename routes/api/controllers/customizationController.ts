@@ -1,30 +1,32 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorHandler } from "../../../helpers.js";
 import Configuration from "../models/configuration.js";
-import Language from "../models/language.js";
-import Setting from "../models/setting.js";
 import Template from "../models/template.js";
+import fs from "fs";
+import tmp from "tmp";
 
-export default class SettingController {
+export default class CustomizationController {
 
-  get = async (_: Request, res: Response, next: NextFunction) => {
+  export = async (_: Request, res: Response, next: NextFunction) => {
 
     try {
 
-      const languages = await Language.getAll();
+      const configuration = await Configuration.get();
+      const template = await Template.get();
 
-      let selectedSetting = await Setting.get();
+      const jsonContent = JSON.stringify({
+        version: "1.0",
+        data: {
+          configuration: configuration,
+          template: template
+        }
+      });
 
-      if(selectedSetting === null) {
-        selectedSetting = languages[0].setting;
-        await Setting.set(languages[0].setting);
-        await Configuration.set(languages[0].configuration);
-        await Template.set(languages[0].template);
-      }
+      tmp.file(function (err, path, fd, cleanupCallback) {
+        if (err) throw err;
+        fs.writeFileSync(path, jsonContent);
+        res.download(path, "twilio-fronline-demo-customization.json");
 
-      res.status(200).json({
-        selectedSetting: selectedSetting,
-        settings: languages.map(item => item.setting)
+        cleanupCallback();
       });
 
 
@@ -34,7 +36,7 @@ export default class SettingController {
 
   };
 
-  setSelectedSetting = async (req: Request, res: Response, next: NextFunction) => {
+  /*setSelectedSetting = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 
@@ -65,6 +67,6 @@ export default class SettingController {
       next(error)
     }
 
-  };
+  };*/
 
 }

@@ -10,7 +10,7 @@ export const TemplateContext = createContext<{
   template: []
 });
 
-const TemplateProvider: FC = ({ children }) => {
+const TemplateProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { getTemplate, postTemplate } = useApi();
 

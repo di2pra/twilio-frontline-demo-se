@@ -1,75 +1,80 @@
 {
-  "lang": "en-GB",
+  "lang": "es-ES",
   "setting": {
     "pollyVoice": [
       "Polly.Conchita",
       "Polly.Enrique",
       "Polly.Lucia",
-      "Polly.Lucia-Neural"
+      "Polly.Lucia-Neural",
+      "Polly.Mia",
+      "Polly.Lupe",
+      "Polly.Miguel",
+      "Polly.Penelope",
+      "Polly.Lupe-Neural"
     ],
     "phoneNumberSMS": "+34911650396",
     "phoneNumberWA": "+34911650396",
-    "phoneNumberVoice": ""
+    "phoneNumberVoice": "+34911650396"
   },
   "configuration": {
     "selectedPollyVoice": "Polly.Conchita",
     "companyNameShort": "Twilio",
     "companyNameLong": "Twilio",
     "companyUrl": "https://twilio.com",
-    "welcomeKnownContact": "Good morning, welcome to {{companyNameLong}}, let me connect with your advisor.",
-    "welcomeUnknownContact": "Good morning, welcome to {{companyNameLong}}. let me connect you with our first agent available.",
-    "agentBusyAnswer": "Sorry, your advisor is busy, let me transfer the call to our contact center.",
-    "agentNotFoundAnswer": "Let me transfer the call to our contact center."
+    "welcomeKnownContact": "Buenos días, bienvenido a {{companyNameLong}}, permíteme contactarte con tu asesor.",
+    "welcomeUnknownContact": "Buenos días, bienvenido a {{companyNameLong}}. permíteme conectarte con nuestro primer agente disponible.",
+    "agentBusyAnswer": "Lo siento, tu asesor está ocupado en este momento, permíteme transferir la llamada a nuestro centro de contacto.",
+    "agentNotFoundAnswer": "Permíteme transferir la llamada a nuestro centro de contacto."
   },
   "templates": [
     {
-      "display_name": "Openers",
+      "display_name": "Iniciar una conversación",
       "templates": [
         {
-          "content": "Hello {{customerFirstname}} we have now processed your documents and would like to move you on to the next step. Drop me a message. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Hola {{customerFirstname}} ya hemos procesado tus documentos y nos gustaría continuar con el siguiente paso. Por favor, déjame un mensaje. {{agentFirstname}}.",
+          "whatsAppApproved": true
         },
         {
-          "content": "Hello {{customerFirstname}} we have a new product out which may be of interest to your business. Drop me a message. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Hola {{customerFirstname}} tenemos un nuevo producto que puede ser de interés para tu negocio. Por favor, déjame un mensaje. {{agentFirstname}}.",
+          "whatsAppApproved": false
         },
         {
-          "content": "Just to confirm I am on my way to your office. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Sólo para confirmar, estoy de camino a tu oficina. {{agentFirstname}}.",
+          "whatsAppApproved": false
         }
       ]
     },
     {
-      "display_name": "Replies",
+      "display_name": "Respuestas",
       "templates": [
         {
-          "content": "This has now been sent. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Esto ya se ha enviado. {{agentFirstname}}.",
+          "whatsAppApproved": false
         },
         {
-          "content": "Our rates for any loan are 20% or 30% over $30,000. You can read more at {{companyUrl}}. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Nuestras tasas para cualquier préstamo son del 20% o 30% sobre $30.000. Para más información {{companyUrl}}. {{agentFirstname}}.",
+          "whatsAppApproved": false
         },
         {
-          "content": "Just to confirm I am on my way to your office. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Sólo para confirmar, estoy de camino a tu oficina. {{agentFirstname}}.",
+          "whatsAppApproved": false
         },
         {
-          "content": "Would you like me to go over some options with you {{customerFirstname}}? {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "¿Quieres que analice algunas opciones contigo? {{customerFirstname}}? {{agentFirstname}}.",
+          "whatsAppApproved": false
         },
         {
-          "content": "We have a secure drop box for documents. Can you attach and upload them here: {{companyUrl}}. {{agentFirstname}}",
-          "whatsappApproved": false
+          "content": "Tenemos un buzón seguro para los documentos. Por favor, ¿podrías adjuntarlos y subirlos aquí? {{companyUrl}}. {{agentFirstname}}",
+          "whatsAppApproved": false
         }
       ]
     },
     {
-      "display_name": "Closing",
+      "display_name": "Cerrar la conversación",
       "templates": [
         {
-          "content": "Happy to help, {{customerFirstname}}. If you have a moment could you leave a review about our interaction at this link: {{companyUrl}}. {{agentFirstname}}.",
-          "whatsappApproved": false
+          "content": "Es un placer ayudarte, {{customerFirstname}}. Por favor, si tienes un momento, ¿podrías dejar un comentario sobre nuestra conversación en el siguiente enlace?: {{companyUrl}}. {{agentFirstname}}.",
+          "whatsAppApproved": false
         }
       ]
     }
