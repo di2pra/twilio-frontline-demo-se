@@ -215,20 +215,6 @@ function useApi() {
 
   }, [putWithAuth]);
 
-  const exportCustomization : () => Promise<IClaim | null> = useCallback(async () => {
-
-    const result = await fetchWithAuth(`/api/v1/customization`, {});
-
-    const data = await result.json();
-
-    if (result.ok) {
-      return data;
-    } else {
-      throw new Error(data.message);
-    }
-
-  }, [fetchWithAuth]);
-
   return {
     getTemplate,
     postTemplate,
@@ -240,8 +226,7 @@ function useApi() {
     getConversation,
     deleteAllConversation,
     getSetting,
-    postSetting,
-    exportCustomization
+    postSetting
   };
 }
 

@@ -1,38 +1,46 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import { Alert, Button, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
-import useApi from "../../hooks/useApi";
 import { ClaimContext } from "../../providers/ClaimProvider";
 import { SettingContext } from "../../providers/SettingProvider";
 import { UserContext } from "../../SecureLayout";
 import { BiImport, BiExport } from 'react-icons/bi';
 import { ImExit, ImEnter } from 'react-icons/im';
 import { getFlagEmoji } from "../../Helper";
-import { ConfigurationContext } from "../../providers/ConfigurationProvider";
-import { TemplateContext } from "../../providers/TemplateProvider";
+import ModalBox from "../../components/ModalBox";
 
 const ClaimSection = () => {
-
-  const { exportCustomization } = useApi();
 
   const { claim, closeClaimHandler, addClaimHandler } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
   const { setting, updateSetting } = useContext(SettingContext);
 
-  const onLangChange = useCallback((lang: string) => {
-    if (updateSetting) {
-      updateSetting(lang)
-    }
-  }, [updateSetting]);
+  const [selectedNewLang, setSelectedNewLang] = useState<string>();
 
-  const exportCustomizationHandler = useCallback(() => {
-    exportCustomization().then(data => {
-      console.log(data);
-    })
-  }, [exportCustomization]);
+  const modal = useRef<{open: () => void}>(null);
+
+  const onLangChange = useCallback((lang: string) => {
+    
+    if(modal.current) {
+      setSelectedNewLang(lang);
+      modal.current.open();
+    }
+
+  }, [modal]);
+
+  const changeLangConfirm = useCallback((confirmation: boolean) => {
+    if (confirmation === true && updateSetting && selectedNewLang) {
+      updateSetting(selectedNewLang);
+      setSelectedNewLang(undefined);
+    }
+  }, [selectedNewLang, updateSetting])
 
   if (claim && claim.ended_at === null) {
     return (
       <>
+        <ModalBox ref={modal} callback={changeLangConfirm}>
+          <p className="mb-0">Are you sure you want to change the country?</p>
+          <i className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</i>
+        </ModalBox>
         {
           claim.user === loggedInUser?.email ? <Row className="mb-3">
             <Col>
@@ -62,7 +70,7 @@ const ClaimSection = () => {
               <BiExport />
               <span>Export Customization</span>
             </a>
-            <Button className="btn-with-icon" variant="secondary" onClick={() => { exportCustomizationHandler() }} >
+            <Button className="btn-with-icon" variant="secondary">
               <BiImport />
               <span>Import Customization</span>
             </Button>

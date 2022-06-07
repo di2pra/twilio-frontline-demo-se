@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorHandler } from "../../../helpers.js";
 import Configuration from "../models/configuration.js";
+import Conversation from "../models/conversation.js";
 import Language from "../models/language.js";
 import Setting from "../models/setting.js";
 import Template from "../models/template.js";
@@ -53,6 +54,7 @@ export default class SettingController {
         await Setting.set(selectedLanguage.setting);
         await Configuration.set(selectedLanguage.configuration);
         await Template.set(selectedLanguage.template);
+        await Conversation.deleteAll();
 
         res.status(200).json({
           selectedSetting: selectedLanguage.setting,
