@@ -29,7 +29,7 @@ export const incomingVoiceCallbackHandler = async (req: Request, res: Response) 
       KNOWN_CUSTOMER_INTO = KNOWN_CUSTOMER_INTO.replace(/{{companyNameShort}}/, configuration.companyNameShort);
     }
 
-    responseBody = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="${configuration.selectedPollyVoice}" >${KNOWN_CUSTOMER_INTO}</Say><Connect action="https://${req.hostname}/frontline/callback/voiceAction"><Conversation serviceInstanceSid="ISa442c5ab66fc4935b3270d3b04c2f7bf" inboundTimeout="20"/></Connect></Response>`;
+    responseBody = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="${configuration.selectedPollyVoice}" >${KNOWN_CUSTOMER_INTO}</Say><Connect action="https://${req.hostname}/frontline/callback/voiceAction"><Conversation serviceInstanceSid="${process.env.TWILIO_CONVERSATION_SERVICE_SID}" inboundTimeout="20"/></Connect></Response>`;
   }
 
   res.setHeader('Content-Type', 'text/xml').status(200).send(responseBody);
