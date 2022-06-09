@@ -12,6 +12,7 @@ import ClaimProvider from './providers/ClaimProvider';
 import ConfigurationProvider from './providers/ConfigurationProvider';
 import SettingProvider from './providers/SettingProvider';
 import TemplateProvider from './providers/TemplateProvider';
+import ConversationProvider from './providers/ConversationProvider';
 
 export default function App() {
 
@@ -40,11 +41,10 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/" element={<SecureLayout />}>
-          <Route index element={<SettingProvider><ConfigurationProvider><TemplateProvider><ClaimProvider><Home /></ClaimProvider></TemplateProvider></ConfigurationProvider></SettingProvider>} />
+          <Route index element={<SettingProvider><ConfigurationProvider><TemplateProvider><ClaimProvider><ConversationProvider><Home /></ConversationProvider></ClaimProvider></TemplateProvider></ConfigurationProvider></SettingProvider>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Security>
-
   );
 }

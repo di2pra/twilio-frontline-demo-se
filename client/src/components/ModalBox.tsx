@@ -23,7 +23,7 @@ const ModalBox = ({ children, defaultOpened = false, callback }: { children: Rea
  
   if (showModal) {
     return createPortal(
-      <Modal show onHide={() => closeModal(false)}>
+      <Modal backdrop="static" show onHide={() => closeModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Change the country</Modal.Title>
         </Modal.Header>

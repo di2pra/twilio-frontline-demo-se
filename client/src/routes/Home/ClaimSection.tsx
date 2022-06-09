@@ -44,7 +44,7 @@ const ClaimSection = () => {
             <i className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</i>
           </ModalBox>
           <Row className="mb-3">
-            <Col className="d-flex" style={{ 'gap': '1rem' }}>
+            <Col className="d-flex col-10" style={{ 'gap': '1rem' }}>
               <Button className="btn-with-icon" variant="danger" onClick={() => { if (closeClaimHandler) { closeClaimHandler(claim.id) } }} >
                 <ImExit />
                 <span>Release the demo</span>

@@ -1,60 +1,18 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { Alert, Button, Card, Spinner, Table } from "react-bootstrap";
-import useApi from "../../hooks/useApi";
+import { useContext } from "react";
+import { Alert, Button, Card, Table } from "react-bootstrap";
 import { ClaimContext } from "../../providers/ClaimProvider";
 import { UserContext } from "../../SecureLayout";
-import { IConversation } from "../../Types";
 import { MdDelete } from 'react-icons/md';
+import { ConversationContext } from "../../providers/ConversationProvider";
 
 const ConversationSection = () => {
 
-  const { getConversation, deleteAllConversation } = useApi();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [conversationList, setConversationList] = useState<IConversation[]>([]);
+  const { conversationList, deleteAllHandler } = useContext(ConversationContext);
 
   const { claim } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
 
-  useEffect(() => {
-
-    setIsLoading(true);
-
-    getConversation().then((data) => {
-      setConversationList(data);
-      setIsLoading(false);
-    });
-
-
-  }, [getConversation]);
-
-  const deleteHandler = useCallback(() => {
-
-    setIsLoading(true);
-
-    deleteAllConversation().then(() => {
-      getConversation().then((data) => {
-        setConversationList(data);
-        setIsLoading(false);
-      });
-    })
-
-  }, [deleteAllConversation, getConversation])
-
-  if (isLoading) {
-    return (
-      <Card className="mb-3">
-        <Card.Header as="h3">Conversations</Card.Header>
-        <Card.Body>
-          <div className="d-flex flex-column justify-content-center align-items-center mt-3">
-            <Spinner className="mb-3" animation="border" variant="danger" />
-            <h3>Loading...</h3>
-          </div>
-        </Card.Body>
-      </Card>
-    )
-  }
-
-  if(conversationList.length === 0) {
+  if (conversationList.length === 0) {
     return (
       <Card className="mb-3">
         <Card.Header as="h3">Conversations</Card.Header>
@@ -92,7 +50,7 @@ const ConversationSection = () => {
           </tbody>
         </Table>
         {
-          (claim != null && claim.ended_at === null && (claim.user === loggedInUser?.email)) ? <Button className="btn-with-icon" variant="danger" onClick={deleteHandler}><MdDelete /><span>Delete All</span></Button> : null
+          (claim != null && claim.ended_at === null && (claim.user === loggedInUser?.email)) ? <Button className="btn-with-icon" variant="danger" onClick={deleteAllHandler}><MdDelete /><span>Delete All</span></Button> : null
         }
       </Card.Body>
     </Card>
