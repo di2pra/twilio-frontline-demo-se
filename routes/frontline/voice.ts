@@ -11,22 +11,24 @@ export const incomingVoiceCallbackHandler = async (req: Request, res: Response) 
   const customerDetails = await getCustomerByNumber(from);
   const configuration = await Configuration.get();
 
-  let UNKNOWN_CUSTOMER_INTRO = `Bonjour, bienvenue chez Twilio. Je vous redirige vers le premier conseiller disponible de notre centre d'appel.`;
+  let UNKNOWN_CUSTOMER_INTRO = '';
 
   if(configuration) {
-    UNKNOWN_CUSTOMER_INTRO = configuration.welcomeUnknownContact.replace(/{{companyNameLong}}/, configuration.companyNameLong);
-    UNKNOWN_CUSTOMER_INTRO = UNKNOWN_CUSTOMER_INTRO.replace(/{{companyNameShort}}/, configuration.companyNameShort);
+    UNKNOWN_CUSTOMER_INTRO = configuration.welcomeUnknownContact
+    .replace(/{{companyNameLong}}/, configuration.companyNameLong)
+    .replace(/{{companyNameShort}}/, configuration.companyNameShort);
   }
 
   let responseBody = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="${configuration.selectedPollyVoice}" >${UNKNOWN_CUSTOMER_INTRO}</Say><Dial>${process.env.FRONTLINE_CC_NUMBER}</Dial></Response>`;
 
   if (customerDetails) {
 
-    let KNOWN_CUSTOMER_INTO = `Bonjour, bienvenue chez Twilio, je vous mets en relation avec votre conseiller.`;
+    let KNOWN_CUSTOMER_INTO = '';
 
     if(configuration) {
-      KNOWN_CUSTOMER_INTO = configuration.welcomeKnownContact.replace(/{{companyNameLong}}/, configuration.companyNameLong);
-      KNOWN_CUSTOMER_INTO = KNOWN_CUSTOMER_INTO.replace(/{{companyNameShort}}/, configuration.companyNameShort);
+      KNOWN_CUSTOMER_INTO = configuration.welcomeKnownContact
+      .replace(/{{companyNameLong}}/, configuration.companyNameLong)
+      .replace(/{{companyNameShort}}/, configuration.companyNameShort);
     }
 
     responseBody = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="${configuration.selectedPollyVoice}" >${KNOWN_CUSTOMER_INTO}</Say><Connect action="https://${req.hostname}/frontline/callback/voiceAction"><Conversation serviceInstanceSid="${process.env.TWILIO_CONVERSATION_SERVICE_SID}" inboundTimeout="20"/></Connect></Response>`;
@@ -46,21 +48,24 @@ export const incomingVoiceActionHandler = async (req: Request, res: Response) =>
 
   if (req.body.Result === "dialed-call-incomplete") {
 
-    let AGENT_IS_BUSY_ANSWER = `Votre conseiller est occupé, je vous redirige vers le centre d'appel`;
+    let AGENT_IS_BUSY_ANSWER = '';
 
     if(configuration) {
-      AGENT_IS_BUSY_ANSWER = configuration.agentBusyAnswer.replace(/{{companyNameLong}}/, configuration.companyNameLong);
-      AGENT_IS_BUSY_ANSWER = AGENT_IS_BUSY_ANSWER.replace(/{{companyNameShort}}/, configuration.companyNameShort);
+      AGENT_IS_BUSY_ANSWER = configuration.agentBusyAnswer
+      .replace(/{{companyNameLong}}/, configuration.companyNameLong)
+      .replace(/{{companyNameShort}}/, configuration.companyNameShort);
     }
 
     responseBody = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="${configuration.selectedPollyVoice}" >${AGENT_IS_BUSY_ANSWER}</Say><Dial>${process.env.FRONTLINE_CC_NUMBER}</Dial></Response>`;
+  
   } else if (req.body.Result === "no-other-participants" || req.body.Result === "internal-error") {
 
-    let AGENT_NOT_FOUND_ANSWER = `Je vous redirige vers le premier conseiller disponible de notre centre d'appel.`;
+    let AGENT_NOT_FOUND_ANSWER = '';
 
     if(configuration) {
-      AGENT_NOT_FOUND_ANSWER = configuration.agentNotFoundAnswer.replace(/{{companyNameLong}}/, configuration.companyNameLong);
-      AGENT_NOT_FOUND_ANSWER = AGENT_NOT_FOUND_ANSWER.replace(/{{companyNameShort}}/, configuration.companyNameShort);
+      AGENT_NOT_FOUND_ANSWER = configuration.agentNotFoundAnswer
+      .replace(/{{companyNameLong}}/, configuration.companyNameLong)
+      .replace(/{{companyNameShort}}/, configuration.companyNameShort);
     }
 
     responseBody = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="${configuration.selectedPollyVoice}" >${AGENT_NOT_FOUND_ANSWER}</Say><Dial>${process.env.FRONTLINE_CC_NUMBER}</Dial></Response>`;

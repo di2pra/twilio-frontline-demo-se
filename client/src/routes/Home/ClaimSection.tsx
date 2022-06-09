@@ -16,11 +16,11 @@ const ClaimSection = () => {
 
   const [selectedNewLang, setSelectedNewLang] = useState<string>();
 
-  const modal = useRef<{open: () => void}>(null);
+  const modal = useRef<{ open: () => void }>(null);
 
   const onLangChange = useCallback((lang: string) => {
-    
-    if(modal.current) {
+
+    if (modal.current) {
       setSelectedNewLang(lang);
       modal.current.open();
     }
@@ -35,18 +35,27 @@ const ClaimSection = () => {
   }, [selectedNewLang, updateSetting])
 
   if (claim && claim.ended_at === null) {
-    return (
-      <>
-        <ModalBox ref={modal} callback={changeLangConfirm}>
-          <p className="mb-0">Are you sure you want to change the country?</p>
-          <i className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</i>
-        </ModalBox>
-        {
-          claim.user === loggedInUser?.email ? <Row className="mb-3">
-            <Col>
+
+    if (claim.user === loggedInUser?.email) {
+      return (
+        <>
+          <ModalBox ref={modal} callback={changeLangConfirm}>
+            <p className="mb-0">Are you sure you want to change the country?</p>
+            <i className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</i>
+          </ModalBox>
+          <Row className="mb-3">
+            <Col className="d-flex" style={{ 'gap': '1rem' }}>
               <Button className="btn-with-icon" variant="danger" onClick={() => { if (closeClaimHandler) { closeClaimHandler(claim.id) } }} >
                 <ImExit />
                 <span>Release the demo</span>
+              </Button>
+              <a target="_blank" href="/customization/export" className="btn btn-secondary btn-with-icon" >
+                <BiExport />
+                <span>Export Customization</span>
+              </a>
+              <Button className="btn-with-icon" variant="secondary">
+                <BiImport />
+                <span>Import Customization</span>
               </Button>
             </Col>
             <Col className="text-end">
@@ -56,28 +65,23 @@ const ClaimSection = () => {
                 }
               </DropdownButton>
             </Col>
-          </Row> : <Row className="mb-3">
-            <Col>
-              <Alert variant="warning" className="m-0">
-                <p className="mb-0">This demo is currently being used by <b>{claim.user}</b>.</p>
-              </Alert>
-            </Col>
           </Row>
-        }
+        </>
+
+      )
+    } else {
+      return (
         <Row className="mb-3">
-          <Col className="d-flex" style={{ 'gap': '1rem' }}>
-            <a target="_blank" href="/customization/export" className="btn btn-secondary btn-with-icon" >
-              <BiExport />
-              <span>Export Customization</span>
-            </a>
-            <Button className="btn-with-icon" variant="secondary">
-              <BiImport />
-              <span>Import Customization</span>
-            </Button>
+          <Col>
+            <Alert variant="warning" className="m-0">
+              <p className="mb-0">This demo is currently being used by <b>{claim.user}</b>.</p>
+            </Alert>
           </Col>
         </Row>
-      </>
-    )
+      )
+    }
+
+
   } else {
     return (
       <Row className="mb-3">
