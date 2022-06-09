@@ -16,36 +16,55 @@ const ClaimSection = () => {
 
   const [selectedNewLang, setSelectedNewLang] = useState<string>();
 
-  const modal = useRef<{ open: () => void }>(null);
+  const modalLangConfirm = useRef<{ open: () => void }>(null);
+  const modalClaimConfirm = useRef<{ open: () => void }>(null);
 
   const onLangChange = useCallback((lang: string) => {
 
-    if (modal.current) {
+    if (modalLangConfirm.current) {
       setSelectedNewLang(lang);
-      modal.current.open();
+      modalLangConfirm.current.open();
     }
 
-  }, [modal]);
+  }, [modalLangConfirm]);
 
   const changeLangConfirm = useCallback((confirmation: boolean) => {
     if (confirmation === true && updateSetting && selectedNewLang) {
       updateSetting(selectedNewLang);
       setSelectedNewLang(undefined);
     }
-  }, [selectedNewLang, updateSetting])
+  }, [selectedNewLang, updateSetting]);
+
+  const onReleaseClaim = useCallback(() => {
+
+    if (modalClaimConfirm.current) {
+      modalClaimConfirm.current.open();
+    }
+
+  }, [modalClaimConfirm]);
+
+  const releaseClaimConfirm = useCallback((confirmation: boolean) => {
+    if (confirmation === true && closeClaimHandler && claim) {
+      closeClaimHandler(claim.id);
+    }
+  }, [closeClaimHandler, claim])
 
   if (claim && claim.ended_at === null) {
 
     if (claim.user === loggedInUser?.email) {
       return (
         <>
-          <ModalBox ref={modal} callback={changeLangConfirm}>
+          <ModalBox title="Release Demo" ref={modalClaimConfirm} callback={releaseClaimConfirm}>
+            <p className="mb-0">Are you sure you want to release the demo?</p>
+            <i className="text-muted">Releasing the demo will reset the customization and delete all the existing conversations.</i>
+          </ModalBox>
+          <ModalBox title="Change the country" ref={modalLangConfirm} callback={changeLangConfirm}>
             <p className="mb-0">Are you sure you want to change the country?</p>
             <i className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</i>
           </ModalBox>
           <Row className="mb-3">
             <Col className="d-flex col-10" style={{ 'gap': '1rem' }}>
-              <Button className="btn-with-icon" variant="danger" onClick={() => { if (closeClaimHandler) { closeClaimHandler(claim.id) } }} >
+              <Button className="btn-with-icon" variant="danger" onClick={() => onReleaseClaim()} >
                 <ImExit />
                 <span>Release the demo</span>
               </Button>

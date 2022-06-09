@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 
 const modalElement = document.getElementById('modal-root')!;
 
-const ModalBox = ({ children, defaultOpened = false, callback }: { children: React.ReactNode, defaultOpened?: boolean, callback?: (confirmation: boolean) => void }, ref : React.Ref<unknown>) => {
+const ModalBox = ({ title, children, defaultOpened = false, callback }: { title: string, children: React.ReactNode, defaultOpened?: boolean, callback?: (confirmation: boolean) => void }, ref : React.Ref<unknown>) => {
 
   const [showModal, setShowModal] = useState(defaultOpened);
 
@@ -25,7 +25,7 @@ const ModalBox = ({ children, defaultOpened = false, callback }: { children: Rea
     return createPortal(
       <Modal backdrop="static" show onHide={() => closeModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Change the country</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
