@@ -8,6 +8,7 @@ import { ImExit, ImEnter } from 'react-icons/im';
 import { getFlagEmoji } from "../../Helper";
 import ModalBox, { IModalButton } from "../../components/ModalBox";
 import { IBootstrapVariant, IConfirmationModalBtnValue } from "../../Types";
+import useApi from "../../hooks/useApi";
 
 const BTN_CONFIRMATION_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
   {
@@ -37,9 +38,13 @@ const BTN_IMPORT_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
 
 const ClaimSection = () => {
 
+  const { importCustomization } = useApi();
+
   const { claim, closeClaimHandler, addClaimHandler } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
   const { setting, updateSetting } = useContext(SettingContext);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const [selectedNewLang, setSelectedNewLang] = useState<string>();
 
@@ -85,19 +90,42 @@ const ClaimSection = () => {
     }
   }, [closeClaimHandler, claim]);
 
-  const importFileConfirm = useCallback((value: IConfirmationModalBtnValue) => {
-
+  const onFileChange = useCallback((event: any) => {
+    setSelectedFile(event.target.files[0]);
   }, []);
+
+  const onFileUpload = useCallback((value: IConfirmationModalBtnValue) => {
+    // Create an object of formData 
+    const formData = new FormData();
+
+    if (selectedFile) {
+      // Update the formData object 
+      formData.append(
+        "import_file",
+        selectedFile,
+        selectedFile.name
+      );
+    }
+
+    // Details of the uploaded file 
+    console.log(selectedFile);
+
+    importCustomization(formData).then(() => {
+      console.log("hello");
+    })
+
+
+  }, [selectedFile, importCustomization])
 
   if (claim && claim.ended_at === null) {
 
     if (claim.user === loggedInUser?.email) {
       return (
         <>
-          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_IMPORT_MODAL} title="Import Customization" ref={modalImportCustomization} callback={importFileConfirm}>
+          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_IMPORT_MODAL} title="Import Customization" ref={modalImportCustomization} callback={onFileUpload}>
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Import your json customization file</Form.Label>
-              <Form.Control type="file" />
+              <Form.Control type="file" onChange={onFileChange} />
               <Form.Text className="text-muted">Importing a customization file will delete all the existing conversations.</Form.Text>
             </Form.Group>
           </ModalBox>
@@ -119,7 +147,7 @@ const ClaimSection = () => {
                 <BiExport />
                 <span>Export Customization</span>
               </a>
-              <Button className="btn-with-icon" variant="secondary" onClick={() => onImportCustomization()}>
+              <Button className="btn-with-icon" variant="secondary" disabled onClick={() => onImportCustomization()}>
                 <BiImport />
                 <span>Import Customization</span>
               </Button>

@@ -1,6 +1,5 @@
 import { Express } from 'express';
 import OktaController from './controllers/oktaController.js';
-import pg from 'pg';
 import TemplateController from './controllers/templateController.js';
 import ConfigurationController from './controllers/configurationController.js';
 import ClaimController from './controllers/claimController.js';
@@ -39,5 +38,6 @@ export default (router: Express) => {
   router.delete("/api/v1/conversation", claimController.validateClaim, conversationController.deleteAll);
 
   router.get("/customization/export", customizationController.export);
+  router.post("/api/v1/customization/import", customizationController.import);
 
 };

@@ -4,6 +4,7 @@ import enforce from 'express-sslify';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import routes from './routes/index.js';
+import fileUpload from 'express-fileupload';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +16,14 @@ const PORT = process.env.PORT || 80;
 if (process.env.NODE_ENV != 'development') {
   app.use(enforce.HTTPS({ trustProtoHeader: true }));
 }
+
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true,
+  limits: {
+    fileSize: 2 * 1024 * 1024 //2kB max file(s) size
+  }
+}));
 
 app.use(express.json());
 

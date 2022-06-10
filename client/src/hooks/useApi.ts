@@ -44,6 +44,20 @@ function useApi() {
 
   }, [fetchWithAuth]);
 
+  const uploadWithAuth = useCallback(async (input: RequestInfo, body: FormData) => {
+
+    const init = {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json'
+      },
+      body: body
+    }
+
+    return fetchWithAuth(input, init)
+
+  }, [fetchWithAuth]);
+
   const putWithAuth = useCallback(async (input: RequestInfo, body: object) => {
 
     const init = {
@@ -215,6 +229,20 @@ function useApi() {
 
   }, [putWithAuth]);
 
+  const importCustomization : (formData: FormData) => Promise<void> = useCallback(async (formData: FormData) => {
+
+    const result = await uploadWithAuth(`/api/v1/customization/import`, formData);
+
+    const data = await result.json();
+
+    if (result.ok) {
+      return data;
+    } else {
+      throw new Error(data.message);
+    }
+
+  }, [uploadWithAuth]);
+
   return {
     getTemplate,
     postTemplate,
@@ -226,7 +254,8 @@ function useApi() {
     getConversation,
     deleteAllConversation,
     getSetting,
-    postSetting
+    postSetting,
+    importCustomization
   };
 }
 
