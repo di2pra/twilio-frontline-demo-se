@@ -1,12 +1,39 @@
 import { useCallback, useContext, useRef, useState } from "react";
-import { Alert, Button, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import { Alert, Button, Col, Dropdown, DropdownButton, Form, Row } from "react-bootstrap";
 import { ClaimContext } from "../../providers/ClaimProvider";
 import { SettingContext } from "../../providers/SettingProvider";
 import { UserContext } from "../../SecureLayout";
 import { BiImport, BiExport } from 'react-icons/bi';
 import { ImExit, ImEnter } from 'react-icons/im';
 import { getFlagEmoji } from "../../Helper";
-import ModalBox from "../../components/ModalBox";
+import ModalBox, { IModalButton } from "../../components/ModalBox";
+import { IBootstrapVariant, IConfirmationModalBtnValue } from "../../Types";
+
+const BTN_CONFIRMATION_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
+  {
+    label: "No",
+    variant: IBootstrapVariant.SECONDARY,
+    value: IConfirmationModalBtnValue.No
+  },
+  {
+    label: "Yes",
+    variant: IBootstrapVariant.PRIMARY,
+    value: IConfirmationModalBtnValue.Yes
+  }
+]
+
+const BTN_IMPORT_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
+  {
+    label: "Cancel",
+    variant: IBootstrapVariant.SECONDARY,
+    value: IConfirmationModalBtnValue.No
+  },
+  {
+    label: "Import",
+    variant: IBootstrapVariant.PRIMARY,
+    value: IConfirmationModalBtnValue.Yes
+  }
+]
 
 const ClaimSection = () => {
 
@@ -18,6 +45,15 @@ const ClaimSection = () => {
 
   const modalLangConfirm = useRef<{ open: () => void }>(null);
   const modalClaimConfirm = useRef<{ open: () => void }>(null);
+  const modalImportCustomization = useRef<{ open: () => void }>(null);
+
+  const onImportCustomization = useCallback(() => {
+
+    if (modalImportCustomization.current) {
+      modalImportCustomization.current.open();
+    }
+
+  }, [modalImportCustomization]);
 
   const onLangChange = useCallback((lang: string) => {
 
@@ -28,8 +64,8 @@ const ClaimSection = () => {
 
   }, [modalLangConfirm]);
 
-  const changeLangConfirm = useCallback((confirmation: boolean) => {
-    if (confirmation === true && updateSetting && selectedNewLang) {
+  const changeLangConfirm = useCallback((value: IConfirmationModalBtnValue) => {
+    if (value === IConfirmationModalBtnValue.Yes && updateSetting && selectedNewLang) {
       updateSetting(selectedNewLang);
       setSelectedNewLang(undefined);
     }
@@ -43,24 +79,35 @@ const ClaimSection = () => {
 
   }, [modalClaimConfirm]);
 
-  const releaseClaimConfirm = useCallback((confirmation: boolean) => {
-    if (confirmation === true && closeClaimHandler && claim) {
+  const releaseClaimConfirm = useCallback((value: IConfirmationModalBtnValue) => {
+    if (value === IConfirmationModalBtnValue.Yes && closeClaimHandler && claim) {
       closeClaimHandler(claim.id);
     }
-  }, [closeClaimHandler, claim])
+  }, [closeClaimHandler, claim]);
+
+  const importFileConfirm = useCallback((value: IConfirmationModalBtnValue) => {
+
+  }, []);
 
   if (claim && claim.ended_at === null) {
 
     if (claim.user === loggedInUser?.email) {
       return (
         <>
-          <ModalBox title="Release Demo" ref={modalClaimConfirm} callback={releaseClaimConfirm}>
-            <p className="mb-0">Are you sure you want to release the demo?</p>
-            <i className="text-muted">Releasing the demo will reset the customization and delete all the existing conversations.</i>
+          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_IMPORT_MODAL} title="Import Customization" ref={modalImportCustomization} callback={importFileConfirm}>
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label>Import your json customization file</Form.Label>
+              <Form.Control type="file" />
+              <Form.Text className="text-muted">Importing a customization file will delete all the existing conversations.</Form.Text>
+            </Form.Group>
           </ModalBox>
-          <ModalBox title="Change the country" ref={modalLangConfirm} callback={changeLangConfirm}>
+          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_CONFIRMATION_MODAL} title="Release Demo" ref={modalClaimConfirm} callback={releaseClaimConfirm}>
+            <p className="mb-0">Are you sure you want to release the demo?</p>
+            <small className="text-muted">Releasing the demo will reset the customization and delete all the existing conversations.</small>
+          </ModalBox>
+          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_CONFIRMATION_MODAL} title="Change the country" ref={modalLangConfirm} callback={changeLangConfirm}>
             <p className="mb-0">Are you sure you want to change the country?</p>
-            <i className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</i>
+            <small className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</small>
           </ModalBox>
           <Row className="mb-3">
             <Col className="d-flex col-10" style={{ 'gap': '1rem' }}>
@@ -72,7 +119,7 @@ const ClaimSection = () => {
                 <BiExport />
                 <span>Export Customization</span>
               </a>
-              <Button className="btn-with-icon" variant="secondary">
+              <Button className="btn-with-icon" variant="secondary" onClick={() => onImportCustomization()}>
                 <BiImport />
                 <span>Import Customization</span>
               </Button>

@@ -30,6 +30,7 @@ const ConversationSection = () => {
         <Table striped bordered>
           <thead>
             <tr>
+              <th>SID</th>
               <th>Friendly Name</th>
               <th>Created</th>
               <th>Last Updated</th>
@@ -40,6 +41,7 @@ const ConversationSection = () => {
             {
               conversationList.map((item, index) => {
                 return (<tr key={index}>
+                  <td>{item.sid}</td>
                   <td>{item.friendlyName}</td>
                   <td>{`${(new Date(item.dateCreated)).toLocaleDateString()} ${(new Date(item.dateCreated)).toLocaleTimeString()}`}</td>
                   <td>{`${(new Date(item.dateUpdated)).toLocaleDateString()} ${(new Date(item.dateUpdated)).toLocaleTimeString()}`}</td>

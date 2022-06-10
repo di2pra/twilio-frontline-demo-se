@@ -1,10 +1,31 @@
 import { useCallback, useImperativeHandle, useState, forwardRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { createPortal } from "react-dom";
+import { IBootstrapVariant } from "../Types";
+
+declare module "react" {
+  function forwardRef<T, P = {}>(
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
+  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
+}
 
 const modalElement = document.getElementById('modal-root')!;
 
-const ModalBox = ({ title, children, defaultOpened = false, callback }: { title: string, children: React.ReactNode, defaultOpened?: boolean, callback?: (confirmation: boolean) => void }, ref : React.Ref<unknown>) => {
+export type IModalButton<T> = {
+  label: string;
+  variant: IBootstrapVariant;
+  value: T;
+}
+
+type Props<T> = { 
+  title: string, 
+  children: React.ReactNode, 
+  defaultOpened?: boolean, 
+  buttons: IModalButton<T>[], 
+  callback?: (value: T) => void 
+}
+
+function ModalBox<T>({ title, children, defaultOpened = false, buttons, callback }: Props<T>, ref : React.Ref<unknown>) {
 
   const [showModal, setShowModal] = useState(defaultOpened);
 
@@ -12,10 +33,10 @@ const ModalBox = ({ title, children, defaultOpened = false, callback }: { title:
     open: () => setShowModal(true)
   }), []);
 
-  const closeModal = useCallback((confirmation: boolean) => {
+  const closeModal = useCallback((value: T) => {
 
     if(callback) {
-      callback(confirmation);
+      callback(value);
     }
     
     setShowModal(false)
@@ -23,14 +44,15 @@ const ModalBox = ({ title, children, defaultOpened = false, callback }: { title:
  
   if (showModal) {
     return createPortal(
-      <Modal backdrop="static" show onHide={() => closeModal(false)}>
-        <Modal.Header closeButton>
+      <Modal backdrop="static" show>
+        <Modal.Header>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => closeModal(false)}>No</Button>
-          <Button variant="primary" onClick={() => closeModal(true)}>Yes</Button>
+          {
+            buttons.map((btn, key) => <Button key={key} variant={btn.variant} onClick={() => closeModal(btn.value)}>{btn.label}</Button>)
+          }
         </Modal.Footer>
       </Modal>,
       modalElement

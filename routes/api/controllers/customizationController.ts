@@ -36,6 +36,36 @@ export default class CustomizationController {
 
   };
 
+  import = async (_: Request, res: Response, next: NextFunction) => {
+
+    try {
+
+      /*const configuration = await Configuration.get();
+      const template = await Template.get();
+
+      const jsonContent = JSON.stringify({
+        version: "1.0",
+        data: {
+          configuration: configuration,
+          template: template
+        }
+      });
+
+      tmp.file(function (err, path, fd, cleanupCallback) {
+        if (err) throw err;
+        fs.writeFileSync(path, jsonContent);
+        res.download(path, "twilio-fronline-demo-customization.json");
+
+        cleanupCallback();
+      });*/
+
+
+    } catch (error) {
+      next(error)
+    }
+
+  };
+
   /*setSelectedSetting = async (req: Request, res: Response, next: NextFunction) => {
 
     try {

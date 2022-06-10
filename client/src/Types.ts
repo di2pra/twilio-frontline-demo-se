@@ -46,3 +46,20 @@ export interface ITemplate {
     whatsAppApproved: boolean;
   }[]
 }
+
+export enum IBootstrapVariant {
+  PRIMARY = 'primary', 
+  SECONDARY = 'secondary', 
+  SUCCESS = 'success', 
+  DANGER = 'danger', 
+  WARNING = 'warning', 
+  INFO = 'info', 
+  DARK = 'dark', 
+  LIGHT = 'light', 
+  LINK = 'link'
+}
+
+export enum IConfirmationModalBtnValue {
+  No = 0,
+  Yes = 1,
+}

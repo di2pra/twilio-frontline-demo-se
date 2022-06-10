@@ -1,7 +1,8 @@
 import { useOktaAuth } from "@okta/okta-react";
 import { useCallback } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
+import HowToSection from "./Home/HowToSection";
 
 const Login = () => {
 
@@ -11,16 +12,24 @@ const Login = () => {
     await oktaAuth.signInWithRedirect();
   }, [oktaAuth]);
 
-  if(authState && authState.isAuthenticated) {
+  if (authState && authState.isAuthenticated) {
     return <Navigate to="/" />
   }
 
   return (
-    <div className="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-      <Button onClick={() => { triggerLogin() }}>Login using Okta</Button>
-    </div>
+    <Container className="mt-3" fluid>
+      <Row className="justify-content-md-center">
+        <Col lg={10}>
+          <Row className="mb-3">
+            <Col>
+              <Button onClick={() => { triggerLogin() }}>Login using Okta</Button>
+            </Col>
+          </Row>
+          <HowToSection />
+        </Col>
+      </Row>
+    </Container>
   );
-
 }
 
 export default Login;
