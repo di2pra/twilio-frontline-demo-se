@@ -1,15 +1,17 @@
 import { useContext } from "react";
 import { Alert, Button, Card, Table } from "react-bootstrap";
-import { ClaimContext } from "../../providers/ClaimProvider";
 import { UserContext } from "../../SecureLayout";
 import { MdDelete } from 'react-icons/md';
-import { ConversationContext } from "../../providers/ConversationProvider";
+import { IClaim, IConversation } from "../../Types";
 
-const ConversationSection = () => {
+type Props = {
+  claim?: IClaim;
+  conversationList: IConversation[];
+  deleteAllHandler?: () => void;
+}
 
-  const { conversationList, deleteAllHandler } = useContext(ConversationContext);
+const ConversationSection = ({ claim, conversationList, deleteAllHandler }: Props) => {
 
-  const { claim } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
 
   if (conversationList.length === 0) {

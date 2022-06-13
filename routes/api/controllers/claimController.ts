@@ -5,21 +5,7 @@ import Conversation from "../models/conversation.js";
 
 export default class ClaimController {
 
-  get = async (_: Request, res: Response, next: NextFunction) => {
-
-    try {
-
-      const claim = await Claim.get();
-
-      res.status(200).json(claim);
-
-    } catch (error) {
-      next(error)
-    }
-
-  };
-
-  add = async (_: Request, res: Response, next: NextFunction) => {
+  static add = async (_: Request, res: Response, next: NextFunction) => {
 
     try {
 
@@ -38,7 +24,7 @@ export default class ClaimController {
   };
 
 
-  close = async (req: Request, res: Response, next: NextFunction) => {
+  static close = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 
@@ -58,7 +44,7 @@ export default class ClaimController {
 
   };
 
-  validateClaim = async (req: Request, res: Response, next: NextFunction) => {
+  static validateClaim = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 

@@ -1,6 +1,6 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { useCallback } from 'react';
-import { IClaim, IConfiguration, IConversation, ISetting, ITemplate } from '../Types';
+import { IClaim, IConfiguration, IData, ISetting, ITemplate } from '../Types';
 
 function useApi() {
 
@@ -10,7 +10,7 @@ function useApi() {
 
     let newInit = {};
 
-    if(authState && authState.accessToken) {
+    if (authState && authState.accessToken) {
       newInit = { headers: { Authorization: 'Bearer ' + authState.accessToken.accessToken } };
 
       if (init) {
@@ -90,22 +90,20 @@ function useApi() {
 
 
 
-  const getTemplate : () => Promise<ITemplate[]> = useCallback(async () => {
+  const getData: () => Promise<IData> = useCallback(async () => {
 
-    const result = await fetchWithAuth(`/api/v1/template`);
+    const result = await fetchWithAuth(`/api/v1/data`);
     const data = await result.json();
 
     if (result.ok) {
-
-      return data as ITemplate[];
-
+      return data as IData;
     } else {
       throw new Error(data.message);
     }
 
   }, [fetchWithAuth]);
 
-  const postTemplate : (template: ITemplate[]) => Promise<ITemplate[]> = useCallback(async (template: ITemplate[]) => {
+  const postTemplate: (template: ITemplate[]) => Promise<ITemplate[]> = useCallback(async (template: ITemplate[]) => {
 
     const result = await postWithAuth(`/api/v1/template`, template);
 
@@ -119,33 +117,7 @@ function useApi() {
 
   }, [postWithAuth]);
 
-  const getConfiguration : () => Promise<IConfiguration> = useCallback(async () => {
-
-    const result = await fetchWithAuth(`/api/v1/configuration`);
-    const data = await result.json();
-
-    if (result.ok) {
-      return data as IConfiguration;
-    } else {
-      throw new Error(data.message);
-    }
-
-  }, [fetchWithAuth]);
-
-  const getSetting : () => Promise<ISetting> = useCallback(async () => {
-
-    const result = await fetchWithAuth(`/api/v1/setting`);
-    const data = await result.json();
-
-    if (result.ok) {
-      return data as ISetting;
-    } else {
-      throw new Error(data.message);
-    }
-
-  }, [fetchWithAuth]);
-
-  const postSetting : (lang: string) => Promise<ISetting | null> = useCallback(async (lang: string) => {
+  const postSetting: (lang: string) => Promise<ISetting> = useCallback(async (lang: string) => {
 
     const result = await postWithAuth(`/api/v1/setting`, {
       lang: lang
@@ -161,19 +133,6 @@ function useApi() {
 
   }, [postWithAuth]);
 
-  const getConversation : () => Promise<IConversation[]> = useCallback(async () => {
-
-    const result = await fetchWithAuth(`/api/v1/conversation`);
-    const data = await result.json();
-
-    if (result.ok) {
-      return data as IConversation[];
-    } else {
-      throw new Error(data.message);
-    }
-
-  }, [fetchWithAuth]);
-
   const postConfiguration = useCallback(async (info: IConfiguration) => {
 
     const result = await postWithAuth(`/api/v1/configuration`, info);
@@ -188,20 +147,7 @@ function useApi() {
 
   }, [postWithAuth]);
 
-  const getClaim : () => Promise<IClaim | null> = useCallback(async () => {
-
-    const result = await fetchWithAuth(`/api/v1/claim`);
-    const data = await result.json();
-
-    if (result.ok) {
-      return data;
-    } else {
-      throw new Error(data.message);
-    }
-
-  }, [fetchWithAuth]);
-
-  const addClaim : () => Promise<IClaim | null> = useCallback(async () => {
+  const addClaim: () => Promise<IClaim> = useCallback(async () => {
 
     const result = await postWithAuth(`/api/v1/claim`, {});
 
@@ -215,7 +161,7 @@ function useApi() {
 
   }, [postWithAuth]);
 
-  const closeClaim : (id: number) => Promise<IClaim | null> = useCallback(async (id: number) => {
+  const closeClaim: (id: number) => Promise<IClaim> = useCallback(async (id: number) => {
 
     const result = await putWithAuth(`/api/v1/claim/${id}`, {});
 
@@ -229,7 +175,7 @@ function useApi() {
 
   }, [putWithAuth]);
 
-  const importCustomization : (formData: FormData) => Promise<void> = useCallback(async (formData: FormData) => {
+  const importCustomization: (formData: FormData) => Promise<void> = useCallback(async (formData: FormData) => {
 
     const result = await uploadWithAuth(`/api/v1/customization/import`, formData);
 
@@ -244,16 +190,12 @@ function useApi() {
   }, [uploadWithAuth]);
 
   return {
-    getTemplate,
+    getData,
     postTemplate,
-    getConfiguration,
     postConfiguration,
-    getClaim,
     addClaim,
     closeClaim,
-    getConversation,
     deleteAllConversation,
-    getSetting,
     postSetting,
     importCustomization
   };

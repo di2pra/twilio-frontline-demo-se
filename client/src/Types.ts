@@ -47,6 +47,14 @@ export interface ITemplate {
   }[]
 }
 
+export interface IData {
+  claim?: IClaim
+  configuration?: IConfiguration
+  setting?: ISetting
+  template?: ITemplate[]
+  conversationList?: IConversation[];
+}
+
 export enum IBootstrapVariant {
   PRIMARY = 'primary', 
   SECONDARY = 'secondary', 

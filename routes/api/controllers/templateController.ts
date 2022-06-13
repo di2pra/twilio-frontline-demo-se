@@ -4,21 +4,7 @@ import Template from "../models/template.js";
 
 export default class TemplateController {
 
-  get = async (_: Request, res: Response, next: NextFunction) => {
-
-    try {
-
-      const template = await Template.get();
-
-      res.status(200).json(template);
-
-    } catch (error) {
-      next(error)
-    }
-
-  };
-
-  add = async (req: Request, res: Response, next: NextFunction) => {
+  static add = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 

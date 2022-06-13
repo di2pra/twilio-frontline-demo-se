@@ -4,21 +4,7 @@ import Configuration from "../models/configuration.js";
 
 export default class ConfigurationController {
 
-  get = async (_: Request, res: Response, next: NextFunction) => {
-
-    try {
-
-      const configuration = await Configuration.get();
-
-      res.status(200).json(configuration);
-
-    } catch (error) {
-      next(error)
-    }
-
-  };
-
-  add = async (req: Request, res: Response, next: NextFunction) => {
+  static add = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 

@@ -1,14 +1,11 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import { Alert, Button, Col, Dropdown, DropdownButton, Form, Row } from "react-bootstrap";
-import { ClaimContext } from "../../providers/ClaimProvider";
-import { SettingContext } from "../../providers/SettingProvider";
 import { UserContext } from "../../SecureLayout";
 import { BiImport, BiExport } from 'react-icons/bi';
 import { ImExit, ImEnter } from 'react-icons/im';
 import { getFlagEmoji } from "../../Helper";
 import ModalBox, { IModalButton } from "../../components/ModalBox";
-import { IBootstrapVariant, IConfirmationModalBtnValue } from "../../Types";
-import useApi from "../../hooks/useApi";
+import { IBootstrapVariant, IClaim, IConfirmationModalBtnValue, ISetting } from "../../Types";
 
 const BTN_CONFIRMATION_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
   {
@@ -36,13 +33,25 @@ const BTN_IMPORT_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
   }
 ]
 
-const ClaimSection = () => {
+type Props = {
+  claim?: IClaim;
+  setting?: ISetting;
+  addClaimHandler: () => void;
+  closeClaimHandler: (id: number) => void;
+  updateSettingHandler: ((lang: string) => void);
+  importCustomizationHandler: ((formData: FormData) => void);
+}
 
-  const { importCustomization } = useApi();
+const ClaimSection = ({
+  claim,
+  setting,
+  closeClaimHandler,
+  addClaimHandler,
+  updateSettingHandler,
+  importCustomizationHandler
+} : Props) => {
 
-  const { claim, closeClaimHandler, addClaimHandler } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
-  const { setting, updateSetting } = useContext(SettingContext);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
@@ -70,11 +79,11 @@ const ClaimSection = () => {
   }, [modalLangConfirm]);
 
   const changeLangConfirm = useCallback((value: IConfirmationModalBtnValue) => {
-    if (value === IConfirmationModalBtnValue.Yes && updateSetting && selectedNewLang) {
-      updateSetting(selectedNewLang);
+    if (value === IConfirmationModalBtnValue.Yes && selectedNewLang) {
+      updateSettingHandler(selectedNewLang);
       setSelectedNewLang(undefined);
     }
-  }, [selectedNewLang, updateSetting]);
+  }, [selectedNewLang, updateSettingHandler]);
 
   const onReleaseClaim = useCallback(() => {
 
@@ -95,27 +104,25 @@ const ClaimSection = () => {
   }, []);
 
   const onFileUpload = useCallback((value: IConfirmationModalBtnValue) => {
-    // Create an object of formData 
-    const formData = new FormData();
 
-    if (selectedFile) {
-      // Update the formData object 
-      formData.append(
-        "import_file",
-        selectedFile,
-        selectedFile.name
-      );
+    if (value === IConfirmationModalBtnValue.Yes) {
+      // Create an object of formData 
+      const formData = new FormData();
+
+      if (selectedFile) {
+        // Update the formData object 
+        formData.append(
+          "import_file",
+          selectedFile,
+          selectedFile.name
+        );
+      }
+
+      importCustomizationHandler(formData);
     }
 
-    // Details of the uploaded file 
-    console.log(selectedFile);
 
-    importCustomization(formData).then(() => {
-      console.log("hello");
-    })
-
-
-  }, [selectedFile, importCustomization])
+  }, [selectedFile, importCustomizationHandler])
 
   if (claim && claim.ended_at === null) {
 
@@ -147,7 +154,7 @@ const ClaimSection = () => {
                 <BiExport />
                 <span>Export Customization</span>
               </a>
-              <Button className="btn-with-icon" variant="secondary" disabled onClick={() => onImportCustomization()}>
+              <Button className="btn-with-icon" variant="secondary" onClick={() => onImportCustomization()}>
                 <BiImport />
                 <span>Import Customization</span>
               </Button>

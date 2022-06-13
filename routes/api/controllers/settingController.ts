@@ -8,34 +8,7 @@ import Template from "../models/template.js";
 
 export default class SettingController {
 
-  get = async (_: Request, res: Response, next: NextFunction) => {
-
-    try {
-
-      const languages = await Language.getAll();
-
-      let selectedSetting = await Setting.get();
-
-      if(selectedSetting === null) {
-        selectedSetting = languages[0].setting;
-        await Setting.set(languages[0].setting);
-        await Configuration.set(languages[0].configuration);
-        await Template.set(languages[0].template);
-      }
-
-      res.status(200).json({
-        selectedSetting: selectedSetting,
-        settings: languages.map(item => item.setting)
-      });
-
-
-    } catch (error) {
-      next(error)
-    }
-
-  };
-
-  setSelectedSetting = async (req: Request, res: Response, next: NextFunction) => {
+  static setSelectedSetting = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 
@@ -47,9 +20,7 @@ export default class SettingController {
 
       const selectedLanguage = languages.find(item => { return item.lang === String(req.body.lang) });
 
-      if (typeof selectedLanguage === "undefined") {
-        throw new ErrorHandler(400, 'Bad Request : lang unknown');
-      } else {
+      if (selectedLanguage) {
 
         await Setting.set(selectedLanguage.setting);
         await Configuration.set(selectedLanguage.configuration);
@@ -61,6 +32,8 @@ export default class SettingController {
           settings: languages.map(item => item.setting)
         });
 
+      } else {
+        throw new ErrorHandler(400, 'Bad Request : lang unknown');
       }
 
     } catch (error) {

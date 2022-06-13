@@ -3,10 +3,8 @@ import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
 import useForm, { FormSchema } from "../../hooks/useForm";
 import sanitizeHtml from 'sanitize-html';
 import { addCodeTag } from "../../Helper";
-import { ClaimContext } from "../../providers/ClaimProvider";
 import { UserContext } from "../../SecureLayout";
-import { ConfigurationContext } from "../../providers/ConfigurationProvider";
-import { SettingContext } from "../../providers/SettingProvider";
+import { IClaim, IConfiguration, ISetting } from "../../Types";
 
 const stateSchema: FormSchema = {
   selectedPollyVoice: { value: '', errorMessage: '', isInvalid: false },
@@ -46,12 +44,15 @@ const validationStateSchema = {
   }
 };
 
-const ConfigurationSection = () => {
+type Props = {
+  claim?: IClaim;
+  setting?: ISetting;
+  configuration?: IConfiguration;
+  updateConfigurationHandler: (info: IConfiguration) => void;
+}
 
-  const { configuration, updateConfiguration } = useContext(ConfigurationContext);
-  const { setting } = useContext(SettingContext);
+const ConfigurationSection = ({ claim, setting, configuration, updateConfigurationHandler }: Props) => {
 
-  const { claim } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
   const [isEditable, setIsEditable] = useState<boolean>(false);
 
@@ -82,20 +83,20 @@ const ConfigurationSection = () => {
 
   const processAddTemplate = useCallback((state: FormSchema) => {
 
-    if (updateConfiguration) {
-      updateConfiguration({
-        selectedPollyVoice: String(state.selectedPollyVoice.value),
-        companyNameShort: String(state.companyNameShort.value),
-        companyNameLong: String(state.companyNameLong.value),
-        companyUrl: String(state.companyUrl.value),
-        welcomeKnownContact: String(state.welcomeKnownContact.value),
-        welcomeUnknownContact: String(state.welcomeUnknownContact.value),
-        agentBusyAnswer: String(state.agentBusyAnswer.value),
-        agentNotFoundAnswer: String(state.agentNotFoundAnswer.value)
-      });
-    }
 
-  }, [updateConfiguration]);
+    updateConfigurationHandler({
+      selectedPollyVoice: String(state.selectedPollyVoice.value),
+      companyNameShort: String(state.companyNameShort.value),
+      companyNameLong: String(state.companyNameLong.value),
+      companyUrl: String(state.companyUrl.value),
+      welcomeKnownContact: String(state.welcomeKnownContact.value),
+      welcomeUnknownContact: String(state.welcomeUnknownContact.value),
+      agentBusyAnswer: String(state.agentBusyAnswer.value),
+      agentNotFoundAnswer: String(state.agentNotFoundAnswer.value)
+    });
+
+
+  }, [updateConfigurationHandler]);
 
   if (isEditable) {
     return (

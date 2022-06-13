@@ -1,10 +1,11 @@
-import { useContext } from "react";
 import { Card } from "react-bootstrap";
-import { SettingContext } from "../../providers/SettingProvider";
+import { ISetting } from "../../Types";
 
-const InstructionSection = () => {
+type Props = {
+  setting?: ISetting;
+}
 
-  const { setting } = useContext(SettingContext);
+const InstructionSection = ({ setting }: Props) => {
 
   return (
     <Card className="mb-3">
@@ -21,7 +22,7 @@ const InstructionSection = () => {
           <li>
             <b>Frontline:</b> <a href="https://frontline.twilio.com" rel="noreferrer" target={"_blank"}>https://frontline.twilio.com</a> ; workspace : <code>frontline-demo-se</code>
             <ul>
-             <li>Frontline Manage Account : Username <code>se-france@twilio.com</code> / Password : <code>FrontlineManager</code></li>
+              <li>Frontline Manage Account : Username <code>se-france@twilio.com</code> / Password : <code>FrontlineManager</code></li>
             </ul>
           </li>
           <li><b>Hubspot:</b> <a href="https://app.hubspot.com/login/sso" rel="noreferrer" target={"_blank"}>https://app.hubspot.com/login/sso</a></li>

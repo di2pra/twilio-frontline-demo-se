@@ -1,21 +1,22 @@
 import { useCallback, useContext, useState } from "react";
 import { Card, Form, FormCheck, Alert, Button, Col, Row, Table } from "react-bootstrap";
-import { ClaimContext } from "../../providers/ClaimProvider";
-import { TemplateContext } from "../../providers/TemplateProvider";
 import { UserContext } from "../../SecureLayout";
-import { ITemplate } from "../../Types";
+import { IClaim, ITemplate } from "../../Types";
 import sanitizeHtml from 'sanitize-html';
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 
-const TemplateSection = () => {
+type Props = {
+  claim?: IClaim;
+  template: ITemplate[];
+  updateTemplateHandler: (template: ITemplate[]) => void
+}
 
-  const { template, updateTemplate } = useContext(TemplateContext);
+const TemplateSection = ({ claim, template, updateTemplateHandler }: Props) => {
 
   const [isEditable, setIsEditable] = useState<boolean>(false);
 
   const [editableTemplate, setEditableTemplate] = useState<ITemplate[]>([]);
 
-  const { claim } = useContext(ClaimContext);
   const { loggedInUser } = useContext(UserContext);
 
   const handleEditBtn = useCallback(() => {
@@ -29,10 +30,10 @@ const TemplateSection = () => {
   };
 
   const processUpdateTemplate = useCallback(() => {
-    if (updateTemplate && editableTemplate) {
-      updateTemplate(editableTemplate);
+    if (editableTemplate) {
+      updateTemplateHandler(editableTemplate);
     }
-  }, [updateTemplate, editableTemplate]);
+  }, [updateTemplateHandler, editableTemplate]);
 
   const handleOnChange = useCallback((event: any, name: string, catKey: number, tempKey?: number) => {
 
