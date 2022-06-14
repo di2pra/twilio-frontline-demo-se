@@ -159,7 +159,7 @@ export default function Home() {
           <ClaimSection importCustomizationHandler={importCustomizationHandler} claim={data.claim} setting={data.setting} updateSettingHandler={updateSettingHandler} closeClaimHandler={closeClaimHandler} addClaimHandler={addClaimHandler} />
           <HowToSection />
           <InstructionSection setting={data.setting} />
-          <ConfigurationSection claim={data.claim} configuration={data.configuration} updateConfigurationHandler={updateConfigurationHandler} />
+          <ConfigurationSection claim={data.claim} configuration={data.configuration} setting={data.setting} updateConfigurationHandler={updateConfigurationHandler} />
           <TemplateSection claim={data.claim} template={data.template || []} updateTemplateHandler={updateTemplateHandler} />
           <ConversationSection claim={data.claim} conversationList={data.conversationList || []} deleteAllHandler={deleteAllHandler} />
         </Col>
