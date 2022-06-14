@@ -117,7 +117,7 @@ function useApi() {
 
   }, [postWithAuth]);
 
-  const postSetting: (lang: string) => Promise<ISetting> = useCallback(async (lang: string) => {
+  const postSetting: (lang: string) => Promise<IData> = useCallback(async (lang: string) => {
 
     const result = await postWithAuth(`/api/v1/setting`, {
       lang: lang
@@ -126,7 +126,7 @@ function useApi() {
     const data = await result.json();
 
     if (result.ok) {
-      return data as ISetting;
+      return data as IData;
     } else {
       throw new Error(data.message);
     }

@@ -65,7 +65,7 @@ export default class CustomizationController {
       const jsonContent = JSON.stringify({
         version: "1.0",
         data: {
-          e: setting?.lang,
+          lang: setting?.lang,
           configuration: configuration,
           template: template
         }

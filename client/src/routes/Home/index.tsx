@@ -88,9 +88,7 @@ export default function Home() {
   const updateSettingHandler = useCallback((lang: string) => {
     setIsLoading(true);
     postSetting(lang).then((data) => {
-      setData(prevState => {
-        return { ...prevState, setting: data }
-      });
+      setData(data);
       setIsLoading(false);
     });
   }, [postSetting]);

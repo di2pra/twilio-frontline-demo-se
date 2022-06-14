@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorHandler } from "../../../helpers.js";
+import Claim from "../models/claim.js";
 import Configuration from "../models/configuration.js";
 import Conversation from "../models/conversation.js";
 import Language from "../models/language.js";
@@ -27,9 +28,24 @@ export default class SettingController {
         await Template.set(selectedLanguage.template);
         await Conversation.deleteAll();
 
-        res.status(200).json({
+        const data = await Promise.all([Claim.get(), Configuration.get(), Template.get()]);
+
+        const claim = data[0];
+        const configuration = data[1];
+        const template = data[2];
+        const conversationList = [];
+
+        const setting = {
           selectedSetting: selectedLanguage.setting,
           settings: languages.map(item => item.setting)
+        };
+
+        res.status(200).json({
+          claim: claim,
+          configuration: configuration,
+          setting: setting,
+          template: template,
+          conversationList: []
         });
 
       } else {
