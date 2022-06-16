@@ -11,3 +11,7 @@ export const getFlagEmoji = (countryCode : string) => {
     .map(char =>  127397 + char.charCodeAt(0));
   return String.fromCodePoint(...codePoints);
 }
+
+export const Delay = (value: any, duration: number) => {
+  return new Promise(resolve => setTimeout(resolve, duration, value));
+}

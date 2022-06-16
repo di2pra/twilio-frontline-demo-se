@@ -11,13 +11,13 @@ const InstructionSection = ({ setting }: Props) => {
     <Card className="mb-3">
       <Card.Header as="h3">Instructions</Card.Header>
       <Card.Body>
-        <h6>Phone Numbers :</h6>
+        <strong>Phone Numbers :</strong>
         <ul>
           <li>SMS : <code>{setting?.selectedSetting.phoneNumberSMS}</code></li>
           <li>Voice : <code>{setting?.selectedSetting.phoneNumberVoice}</code></li>
           <li>WhatsApp : <code>{setting?.selectedSetting.phoneNumberWA}</code></li>
         </ul>
-        <h6>Links :</h6>
+        <strong>Links :</strong>
         <ul>
           <li>
             <b>Frontline:</b> <a href="https://frontline.twilio.com" rel="noreferrer" target={"_blank"}>https://frontline.twilio.com</a> ; workspace : <code>frontline-demo-se</code>

@@ -7,6 +7,7 @@ import ConversationController from './controllers/conversationController.js';
 import SettingController from './controllers/settingController.js';
 import CustomizationController from './controllers/customizationController.js';
 import DataController from './controllers/dataController.js';
+import ContentController from './controllers/contentController.js';
 
 export default (router: Express) => {
 
@@ -16,6 +17,8 @@ export default (router: Express) => {
   router.use('/api', oktaController.authenticationRequired);
 
   router.get("/api/v1/data", DataController.get);
+
+  router.post("/api/v1/content", ContentController.add);
 
   router.post("/api/v1/setting", ClaimController.validateClaim, SettingController.setSelectedSetting);
 

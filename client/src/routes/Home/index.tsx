@@ -8,6 +8,7 @@ import ConversationSection from "./ConversationSection";
 import HowToSection from "./HowToSection";
 import InstructionSection from "./InstructionSection";
 import TemplateSection from "./TemplateSection";
+import TemplateSectionNew from "./TemplateSectionNew";
 
 export default function Home() {
 
@@ -160,6 +161,7 @@ export default function Home() {
           <HowToSection />
           <InstructionSection setting={data.setting} />
           <ConfigurationSection claim={data.claim} configuration={data.configuration} updateConfigurationHandler={updateConfigurationHandler} />
+          <TemplateSectionNew />
           <TemplateSection claim={data.claim} template={data.template || []} updateTemplateHandler={updateTemplateHandler} />
           <ConversationSection claim={data.claim} conversationList={data.conversationList || []} deleteAllHandler={deleteAllHandler} />
         </Col>

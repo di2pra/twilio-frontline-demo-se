@@ -161,6 +161,20 @@ function useApi() {
 
   }, [postWithAuth]);
 
+  const addTemplateContent: (body: object) => Promise<IClaim> = useCallback(async (body) => {
+
+    const result = await postWithAuth(`/api/v1/content`, body);
+
+    const data = await result.json();
+
+    if (result.ok) {
+      return data;
+    } else {
+      throw new Error(data.message);
+    }
+
+  }, [postWithAuth]);
+
   const closeClaim: (id: number) => Promise<IClaim> = useCallback(async (id: number) => {
 
     const result = await putWithAuth(`/api/v1/claim/${id}`, {});
@@ -197,6 +211,7 @@ function useApi() {
     closeClaim,
     deleteAllConversation,
     postSetting,
+    addTemplateContent,
     importCustomization
   };
 }
