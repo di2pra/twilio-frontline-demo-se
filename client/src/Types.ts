@@ -88,3 +88,23 @@ export enum IWhatsAppCategory {
   MARKETING = "MARKETING", 
   OTP = "OTP"
 }
+
+export type IContentListResponse = {
+  meta: {
+    next_page_url: string | null;
+    previous_page_url: string | null;
+  },
+  contents: {
+    sid: string;
+    friendly_name: string;
+    language: string;
+    variables: {
+      [key: string]: string
+    };
+    types: {
+      [key: string]: {
+        body: string
+      }
+    }
+  }[]
+}

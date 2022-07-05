@@ -5,6 +5,7 @@ import { IClaim, ITemplate } from "../../Types";
 import sanitizeHtml from 'sanitize-html';
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 import AddTemplateModal from "./AddTemplateModal";
+import ListTemplateModal from "./ListTemplateModal";
 
 type FormValue = {
   content: string;
@@ -45,6 +46,7 @@ const TemplateSectionNew = () => {
 
   return (
     <Card className="mb-3">
+      <ListTemplateModal />
       <AddTemplateModal />
       <Card.Header as="h3">Templates</Card.Header>
       <Card.Body>
@@ -55,7 +57,7 @@ const TemplateSectionNew = () => {
         </Row>
         <Row>
           <Col>
-            <Table bordered>
+            <Table className="mb-0" bordered>
               <thead>
                 <tr>
                   <td style={{ width: '50%' }} ><strong>Content</strong></td>
@@ -69,7 +71,7 @@ const TemplateSectionNew = () => {
                     <p className="mb-0" dangerouslySetInnerHTML={{ __html: sanitizeHtml("Bonjour <code>{{1}}</code>, je suis <code>{{2}}</code>, votre conseiller chez <code>{{3}}</code>, je me permets de vous contacter pour qu'on puisse discuter de votre contrat. Envoyez moi un message dès que vous êtes disponible. Merci.") }} />
                   </td>
                   <td>
-                    <Table borderless>
+                    <Table className="mb-0" borderless>
                       <tbody>
                         <tr>
                           <td className="text-center"><p className="mb-0" dangerouslySetInnerHTML={{ __html: sanitizeHtml(`<code>{{1}}</code>`) }} /></td>
@@ -93,7 +95,7 @@ const TemplateSectionNew = () => {
                     <p className="mb-0" dangerouslySetInnerHTML={{ __html: sanitizeHtml("Bonjour <code>{{1}}</code>, je suis <code>{{2}}</code>, votre conseiller chez <code>{{3}}</code>, je me permets de vous contacter pour qu'on puisse discuter de votre contrat. Envoyez moi un message dès que vous êtes disponible. Merci.") }} />
                   </td>
                   <td>
-                    <Table borderless>
+                    <Table className="mb-0" borderless>
                       <tbody>
                         <tr>
                           <td className="text-center"><p className="mb-0" dangerouslySetInnerHTML={{ __html: sanitizeHtml(`<code>{{1}}</code>`) }} /></td>

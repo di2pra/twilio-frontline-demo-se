@@ -1,6 +1,6 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { useCallback } from 'react';
-import { IClaim, IConfiguration, IData, ISetting, ITemplate } from '../Types';
+import { IClaim, IConfiguration, IContentListResponse, IData, ISetting, ITemplate } from '../Types';
 
 function useApi() {
 
@@ -203,6 +203,25 @@ function useApi() {
 
   }, [uploadWithAuth]);
 
+  const getContentList: (url?: string) => Promise<IContentListResponse> = useCallback(async (url?: string) => {
+
+    const params = new URLSearchParams();
+
+    if(url) {
+      params.append('url', url)
+    }
+
+    const result = await fetchWithAuth(`/api/v1/content${params.toString()}`);
+    const data = await result.json();
+
+    if (result.ok) {
+      return data as IContentListResponse;
+    } else {
+      throw new Error(data.message);
+    }
+
+  }, [fetchWithAuth]);
+
   return {
     getData,
     postTemplate,
@@ -212,7 +231,8 @@ function useApi() {
     deleteAllConversation,
     postSetting,
     addTemplateContent,
-    importCustomization
+    importCustomization,
+    getContentList
   };
 }
 

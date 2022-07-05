@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
-import { Form, Button, Col, Row, Table, Modal, Spinner, Alert } from "react-bootstrap";
-import { Delay } from "../../Helper";
+import { Form, Button, Col, Table, Modal, Alert } from "react-bootstrap";
 import useApi from "../../hooks/useApi";
 import { IWhatsAppCategory } from "../../Types";
 
@@ -42,7 +41,7 @@ const AddTemplateModal = () => {
 
   const { addTemplateContent } = useApi();
 
-  const [show, setShow] = useState<boolean>(true);
+  const [show, setShow] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
   const [validated, setValidated] = useState(false);

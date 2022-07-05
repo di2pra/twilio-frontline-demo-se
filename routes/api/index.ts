@@ -19,6 +19,8 @@ export default (router: Express) => {
   router.get("/api/v1/data", DataController.get);
 
   router.post("/api/v1/content", ContentController.add);
+  router.get("/api/v1/content", ContentController.get);
+  router.get("/api/v1/content/:sid", ContentController.get);
 
   router.post("/api/v1/setting", ClaimController.validateClaim, SettingController.setSelectedSetting);
 
