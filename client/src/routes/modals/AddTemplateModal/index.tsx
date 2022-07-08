@@ -1,9 +1,11 @@
 import { useCallback, useState } from "react";
-import { Form, Button, Col, Table, Modal, Alert } from "react-bootstrap";
-import useApi from "../../hooks/useApi";
-import { IWhatsAppCategory } from "../../Types";
+import { Alert, Button, Form, Modal } from "react-bootstrap";
+import useApi from "../../../hooks/useApi";
+import { IWhatsAppCategory } from "../../../Types";
+import VariableInput from "./VariableInput";
+import WhatsAppInput from "./WhatsAppInput";
 
-type FormValue = {
+export type AddTemplateFormValue = {
   friendly_name: string;
   content: string;
   variables: {
@@ -20,33 +22,16 @@ const DEFAULT_VALUE = {
   requestWAApproval: false
 };
 
-const WHATSAPP_CATEGORY = [
-  "ACCOUNT_UPDATE",
-  "PAYMENT_UPDATE",
-  "PERSONAL_FINANCE_UPDATE",
-  "SHIPPING_UPDATE",
-  "RESERVATION_UPDATE",
-  "ISSUE_RESOLUTION",
-  "APPOINTMENT_UPDATE",
-  "TRANSPORTATION_UPDATE",
-  "TICKET_UPDATE",
-  "ALERT_UPDATE",
-  "AUTO_REPLY",
-  "TRANSACTIONAL",
-  "MARKETING",
-  "OTP"
-]
-
 const AddTemplateModal = () => {
 
-  const { addTemplateContent } = useApi();
+  const { createContent } = useApi();
 
   const [show, setShow] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
   const [validated, setValidated] = useState(false);
 
-  const [formValue, setFormValue] = useState<FormValue>(DEFAULT_VALUE);
+  const [formValue, setFormValue] = useState<AddTemplateFormValue>(DEFAULT_VALUE);
 
   const onContentChangeHandler = useCallback((event: any) => {
 
@@ -105,15 +90,17 @@ const AddTemplateModal = () => {
     if (form.checkValidity() === true) {
       setIsLoading(true);
 
-      addTemplateContent(formValue)
+      createContent(formValue)
         .then(() => {
 
         })
         .catch((error) => setError(error.message))
-        .finally(() => setIsLoading(false))
+        .finally(() => setIsLoading(false));
+
+
     }
 
-  }, [formValue]);
+  }, [formValue, createContent]);
 
   const requestWAApprovalChangeHandler = useCallback((event: any) => {
 
@@ -163,18 +150,7 @@ const AddTemplateModal = () => {
               onChange={requestWAApprovalChangeHandler}
             />
           </Form.Group>
-          <Form.Group hidden={formValue.requestWAApproval ? false : true} className="mb-3" as={Col} xs={6} controlId="wa-template-category">
-            <Form.Label>WhatsApp Template Category</Form.Label>
-            <Form.Select disabled={isLoading} required id="wa-template-category" name='wa-template-category' defaultValue={formValue.WACategory} onChange={onWACategoryChangeHandler}>
-              <option value="">Select a value</option>
-              {
-                WHATSAPP_CATEGORY.map((item, key) => {
-                  return <option key={key} value={item}>{item}</option>
-                })
-              }
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">WhatsApp Template Category Is Required</Form.Control.Feedback>
-          </Form.Group>
+          <WhatsAppInput isLoading={isLoading} formValue={formValue} onWACategoryChangeHandler={onWACategoryChangeHandler} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" type="button" onClick={handleClose}>Close</Button>
@@ -185,48 +161,5 @@ const AddTemplateModal = () => {
   )
 }
 
-function VariableInput({ formValue, isLoading, onVariableChangeHandler }: { formValue: FormValue, isLoading: boolean, onVariableChangeHandler: (key: string, value: string) => void }) {
-
-  if (Object.entries(formValue.variables).length > 0) {
-    return (
-      <Form.Group className="mb-3" as={Col} xs={6} controlId="variables">
-        <Form.Label>Variables</Form.Label>
-        <Table borderless>
-          <tbody>
-            {
-              Object.entries(formValue.variables).map(([key, value], index) => {
-                return (
-                  <tr key={index}>
-                    <td className="text-center" style={{ 'verticalAlign': 'middle' }}>{key}</td>
-                    <td>
-                      <Form.Select disabled={isLoading} required name={`variable-${key}`} defaultValue={value} onChange={(e) => onVariableChangeHandler(key, e.target.value)}>
-                        <option value="">Select a value</option>
-                        <option value={`customerFirstname`}>Customer Firstname</option>
-                        <option value={`customerLastname`}>Customer Last Name</option>
-                        <option value={`agentFirstname`}>Agent Firstname</option>
-                        <option value={`agentLastname`}>Agent Lastname</option>
-                        <option value={`companyNameShort`}>Company Name Short</option>
-                        <option value={`companyNameLong`}>Company Name Long</option>
-                        <option value={`companyUrl`}>Company Name Long</option>
-                      </Form.Select>
-                    </td>
-                  </tr>
-                )
-              })
-            }
-          </tbody>
-        </Table>
-      </Form.Group>
-    )
-  } else {
-    return (
-      <Form.Group className="mb-3" as={Col} xs={6} controlId="variables">
-        <Form.Label>Variables</Form.Label>
-        <p className="text-muted">No Variable</p>
-      </Form.Group>
-    )
-  }
-
-}
 
 export default AddTemplateModal;

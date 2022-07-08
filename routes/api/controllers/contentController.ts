@@ -14,20 +14,20 @@ export default class ContentController {
       if (req.params.sid) {
 
         response = await Content.getById(req.params.sid);
-       
+
       } else {
 
-        response = await Content.getList({page_url: req.params.url || undefined});
+        response = await Content.getList({ pageUrl: req.query.pageUrl as string | undefined, PageSize: req.query.pageSize as number | undefined || undefined });
 
       }
-      
+
       res.status(200).json(response);
 
     } catch (error) {
       next(error)
     }
 
-    
+
 
   }
 

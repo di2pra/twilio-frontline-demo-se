@@ -1,4 +1,4 @@
-import { useCallback, useImperativeHandle, useState, forwardRef } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { createPortal } from "react-dom";
 import { IBootstrapVariant } from "../Types";
@@ -9,23 +9,21 @@ declare module "react" {
   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
 }
 
-const modalElement = document.getElementById('modal-root')!;
-
 export type IModalButton<T> = {
   label: string;
   variant: IBootstrapVariant;
   value: T;
 }
 
-type Props<T> = { 
-  title: string, 
-  children: React.ReactNode, 
-  defaultOpened?: boolean, 
-  buttons: IModalButton<T>[], 
-  callback?: (value: T) => void 
+type Props<T> = {
+  title: string,
+  children: React.ReactNode,
+  defaultOpened?: boolean,
+  buttons: IModalButton<T>[],
+  callback?: (value: T) => void
 }
 
-function ModalBox<T>({ title, children, defaultOpened = false, buttons, callback }: Props<T>, ref : React.Ref<unknown>) {
+function ConfirmationModal<T>({ title, children, defaultOpened = false, buttons, callback }: Props<T>, ref: React.Ref<unknown>) {
 
   const [showModal, setShowModal] = useState(defaultOpened);
 
@@ -35,13 +33,13 @@ function ModalBox<T>({ title, children, defaultOpened = false, buttons, callback
 
   const closeModal = useCallback((value: T) => {
 
-    if(callback) {
+    if (callback) {
       callback(value);
     }
-    
+
     setShowModal(false)
   }, [callback]);
- 
+
   if (showModal) {
     return createPortal(
       <Modal backdrop="static" show>
@@ -55,7 +53,7 @@ function ModalBox<T>({ title, children, defaultOpened = false, buttons, callback
           }
         </Modal.Footer>
       </Modal>,
-      modalElement
+      document.body
     )
   }
 
@@ -64,4 +62,4 @@ function ModalBox<T>({ title, children, defaultOpened = false, buttons, callback
 
 }
 
-export default forwardRef(ModalBox);
+export default forwardRef(ConfirmationModal);

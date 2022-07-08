@@ -12,7 +12,7 @@ export default class DataController {
 
     try {
 
-      const data = await Promise.all([Claim.get(), Configuration.get(), Setting.get(), Template.get(), Conversation.getAll(), Language.getAll()]);
+      const data = await Promise.all([Claim.get(), Configuration.get(), Setting.get(), Template.getWithContent(), Conversation.getAll(), Language.getAll()]);
 
       const claim = data[0];
       const configuration = data[1];

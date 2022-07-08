@@ -28,12 +28,11 @@ export default class SettingController {
         await Template.set(selectedLanguage.template);
         await Conversation.deleteAll();
 
-        const data = await Promise.all([Claim.get(), Configuration.get(), Template.get()]);
+        const data = await Promise.all([Claim.get(), Configuration.get(), Template.getWithContent()]);
 
         const claim = data[0];
         const configuration = data[1];
         const template = data[2];
-        const conversationList = [];
 
         const setting = {
           selectedSetting: selectedLanguage.setting,

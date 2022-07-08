@@ -22,7 +22,7 @@ export default function App() {
       oktaAuth.stop(); // stop the service
     }
 
-  }, []);
+  }, [oktaAuth]);
 
   const restoreOriginalUri = async (_oktaAuth: any, originalUri: string) => {
     navigate(toRelativeUrl(originalUri || '/', window.location.origin));

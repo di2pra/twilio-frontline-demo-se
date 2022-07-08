@@ -1,6 +1,6 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { useCallback } from 'react';
-import { IClaim, IConfiguration, IContentListResponse, IData, ISetting, ITemplate } from '../Types';
+import { IClaim, IConfiguration, IContentListResponse, IData, ITemplate } from '../Types';
 
 function useApi() {
 
@@ -73,6 +73,21 @@ function useApi() {
 
   }, [fetchWithAuth]);
 
+  const deleteWithAuth = useCallback(async (input: RequestInfo, body: object) => {
+
+    const init = {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+
+    return fetchWithAuth(input, init)
+
+  }, [fetchWithAuth]);
+
 
   const deleteAllConversation = useCallback(async () => {
 
@@ -102,20 +117,6 @@ function useApi() {
     }
 
   }, [fetchWithAuth]);
-
-  const postTemplate: (template: ITemplate[]) => Promise<ITemplate[]> = useCallback(async (template: ITemplate[]) => {
-
-    const result = await postWithAuth(`/api/v1/template`, template);
-
-    const data = await result.json();
-
-    if (result.ok) {
-      return data as ITemplate[];
-    } else {
-      throw new Error(data.message);
-    }
-
-  }, [postWithAuth]);
 
   const postSetting: (lang: string) => Promise<IData> = useCallback(async (lang: string) => {
 
@@ -161,7 +162,7 @@ function useApi() {
 
   }, [postWithAuth]);
 
-  const addTemplateContent: (body: object) => Promise<IClaim> = useCallback(async (body) => {
+  const createContent: (body: object) => Promise<any> = useCallback(async (body) => {
 
     const result = await postWithAuth(`/api/v1/content`, body);
 
@@ -203,15 +204,19 @@ function useApi() {
 
   }, [uploadWithAuth]);
 
-  const getContentList: (url?: string) => Promise<IContentListResponse> = useCallback(async (url?: string) => {
+  const getContentList: ({ pageUrl, pageSize }: { pageUrl?: string, pageSize?: number }) => Promise<IContentListResponse> = useCallback(async ({ pageUrl, pageSize }: { pageUrl?: string, pageSize?: number }) => {
 
     const params = new URLSearchParams();
 
-    if(url) {
-      params.append('url', url)
+    if (pageUrl) {
+      params.append('pageUrl', pageUrl)
     }
 
-    const result = await fetchWithAuth(`/api/v1/content${params.toString()}`);
+    if (pageSize) {
+      params.append('pageSize', pageSize.toString())
+    }
+
+    const result = await fetchWithAuth(`/api/v1/content?${params.toString()}`);
     const data = await result.json();
 
     if (result.ok) {
@@ -222,17 +227,46 @@ function useApi() {
 
   }, [fetchWithAuth]);
 
+  const addContentToTemplate: (body: object) => Promise<ITemplate[]> = useCallback(async (body) => {
+
+    const result = await postWithAuth(`/api/v1/template/content`, body);
+
+    const data = await result.json();
+
+    if (result.ok) {
+      return data;
+    } else {
+      throw new Error(data.message);
+    }
+
+  }, [postWithAuth]);
+
+  const deleteContentFromTemplate: (body: object) => Promise<ITemplate[]> = useCallback(async (body) => {
+
+    const result = await deleteWithAuth(`/api/v1/template/content`, body);
+
+    const data = await result.json();
+
+    if (result.ok) {
+      return data;
+    } else {
+      throw new Error("Error");
+    }
+
+  }, [deleteWithAuth]);
+
   return {
     getData,
-    postTemplate,
     postConfiguration,
     addClaim,
     closeClaim,
     deleteAllConversation,
     postSetting,
-    addTemplateContent,
+    createContent,
     importCustomization,
-    getContentList
+    getContentList,
+    addContentToTemplate,
+    deleteContentFromTemplate
   };
 }
 

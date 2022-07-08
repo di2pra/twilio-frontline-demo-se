@@ -4,41 +4,10 @@ import Template from "../models/template.js";
 
 export default class TemplateController {
 
-  static add = async (req: Request, res: Response, next: NextFunction) => {
+  static get = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
-
-      if (typeof req.body === "undefined") {
-        throw new ErrorHandler(400, 'Bad Request');
-      }
-
-      await Template.set(req.body);
-
-      const newTemplate = await Template.get();
-
-      res.status(200).json(newTemplate);
-
-    } catch (error) {
-      next(error)
-    }
-
-  };
-
-  /*get = async (_: Request, res: Response, next: NextFunction) => {
-
-    try {
-
-      const categories = await Category.getAll();
-      const templates = await Template.getAll();
-
-      const data = categories.map(category => {
-        return {
-          ...category,
-          ...{
-            templates: templates.filter(item => item.category_id === category.id)
-          }
-        }
-      })
+      const data = await Template.get();
 
       res.status(200).json(data);
 
@@ -48,17 +17,25 @@ export default class TemplateController {
 
   };
 
-  add = async (req: Request, res: Response, next: NextFunction) => {
+  static addContentToTemplate = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 
-      if (typeof req.body.category_id === "undefined" || typeof req.body.content === "undefined" || typeof req.body.whatsapp_approved === "undefined") {
+      const contentSid = req.body.contentSid as string | undefined;
+      const index = req.body.index as number | undefined;
+
+      if (typeof index === "undefined" || typeof contentSid === "undefined") {
         throw new ErrorHandler(400, 'Bad Request');
       }
 
-      const newTemplate = await Template.add(req.body)
+      const currentTemplate = await Template.get();
+      const newTemplate = [...currentTemplate.slice(0, index), { ...currentTemplate[index], ...{ templates: [...new Set([...currentTemplate[index].templates, contentSid])] } }, ...currentTemplate.slice(index + 1)]
 
-      res.status(200).json(newTemplate);
+      await Template.set(newTemplate);
+
+      const data = await Template.getWithContent();
+
+      res.status(200).json(data);
 
     } catch (error) {
       next(error)
@@ -66,17 +43,28 @@ export default class TemplateController {
 
   };
 
-  update = async (req: Request, res: Response, next: NextFunction) => {
+  static deleteContentFromTemplate = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 
-      if (!req.params.id || typeof req.body.category_id === "undefined" || typeof req.body.content === "undefined" || typeof req.body.whatsapp_approved === "undefined") {
+      const contentSid = req.body.contentSid as string | undefined;
+      const index = req.body.index as number | undefined;
+
+      if (typeof index === "undefined" || typeof contentSid === "undefined") {
         throw new ErrorHandler(400, 'Bad Request');
       }
 
-      const updatedTemplate = await Template.update(Number(req.params.id), req.body);
+      const currentTemplate = await Template.get();
 
-      res.status(200).json(updatedTemplate);
+      const newList = currentTemplate[index].templates.filter(item => item !== contentSid);
+
+      const newTemplate = [...currentTemplate.slice(0, index), { ...currentTemplate[index], ...{ templates: newList } }, ...currentTemplate.slice(index + 1)]
+
+      await Template.set(newTemplate);
+
+      const data = await Template.getWithContent();
+
+      res.status(200).json(data);
 
     } catch (error) {
       next(error)
@@ -84,23 +72,5 @@ export default class TemplateController {
 
   };
 
-
-  delete = async (req: Request, res: Response, next: NextFunction) => {
-
-    try {
-
-      if (!req.params.id) {
-        throw new ErrorHandler(400, 'Bad Request');
-      }
-
-      const deleteStatement = await Template.delete(Number(req.params.id));
-
-      res.status(204).json(null);
-
-    } catch (error) {
-      next(error)
-    }
-
-  };*/
 
 }

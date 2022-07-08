@@ -30,11 +30,11 @@ export default class Configuration {
     try {
 
       const redisClient = await Redis.getClient();
-      
+
       const configurationRaw = await redisClient.get('configuration');
 
-      if(configurationRaw) {
-        return JSON.parse(configurationRaw); 
+      if (configurationRaw) {
+        return JSON.parse(configurationRaw);
       } else {
         return null;
       }

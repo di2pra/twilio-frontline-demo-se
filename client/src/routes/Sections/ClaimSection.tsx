@@ -1,10 +1,10 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import { Alert, Button, Col, Dropdown, DropdownButton, Form, Row } from "react-bootstrap";
-import { UserContext } from "../../SecureLayout";
-import { BiImport, BiExport } from 'react-icons/bi';
-import { ImExit, ImEnter } from 'react-icons/im';
+import { BiExport, BiImport } from 'react-icons/bi';
+import { ImEnter, ImExit } from 'react-icons/im';
+import ConfirmationModal, { IModalButton } from "../../components/ConfirmationModal";
 import { getFlagEmoji } from "../../Helper";
-import ModalBox, { IModalButton } from "../../components/ModalBox";
+import { UserContext } from "../../SecureLayout";
 import { IBootstrapVariant, IClaim, IConfirmationModalBtnValue, ISetting } from "../../Types";
 
 const BTN_CONFIRMATION_MODAL: IModalButton<IConfirmationModalBtnValue>[] = [
@@ -49,7 +49,7 @@ const ClaimSection = ({
   addClaimHandler,
   updateSettingHandler,
   importCustomizationHandler
-} : Props) => {
+}: Props) => {
 
   const { loggedInUser } = useContext(UserContext);
 
@@ -129,21 +129,21 @@ const ClaimSection = ({
     if (claim.user === loggedInUser?.email) {
       return (
         <>
-          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_IMPORT_MODAL} title="Import Customization" ref={modalImportCustomization} callback={onFileUpload}>
+          <ConfirmationModal<IConfirmationModalBtnValue> buttons={BTN_IMPORT_MODAL} title="Import Customization" ref={modalImportCustomization} callback={onFileUpload}>
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Import your json customization file</Form.Label>
               <Form.Control type="file" onChange={onFileChange} />
               <Form.Text className="text-muted">Importing a customization file will delete all the existing conversations.</Form.Text>
             </Form.Group>
-          </ModalBox>
-          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_CONFIRMATION_MODAL} title="Release Demo" ref={modalClaimConfirm} callback={releaseClaimConfirm}>
+          </ConfirmationModal>
+          <ConfirmationModal<IConfirmationModalBtnValue> buttons={BTN_CONFIRMATION_MODAL} title="Release the Demo" ref={modalClaimConfirm} callback={releaseClaimConfirm}>
             <p className="mb-0">Are you sure you want to release the demo?</p>
             <small className="text-muted">Releasing the demo will reset the customization and delete all the existing conversations.</small>
-          </ModalBox>
-          <ModalBox<IConfirmationModalBtnValue> buttons={BTN_CONFIRMATION_MODAL} title="Change the country" ref={modalLangConfirm} callback={changeLangConfirm}>
+          </ConfirmationModal>
+          <ConfirmationModal<IConfirmationModalBtnValue> buttons={BTN_CONFIRMATION_MODAL} title="Change the country" ref={modalLangConfirm} callback={changeLangConfirm}>
             <p className="mb-0">Are you sure you want to change the country?</p>
             <small className="text-muted">Changing the country will reset the customization and delete all the existing conversations.</small>
-          </ModalBox>
+          </ConfirmationModal>
           <Row className="mb-3">
             <Col className="d-flex col-10" style={{ 'gap': '1rem' }}>
               <Button className="btn-with-icon" variant="danger" onClick={() => onReleaseClaim()} >

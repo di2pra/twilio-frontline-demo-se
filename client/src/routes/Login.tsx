@@ -2,7 +2,7 @@ import { useOktaAuth } from "@okta/okta-react";
 import { useCallback } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
-import HowToSection from "./Home/HowToSection";
+import HowToSection from "./Sections/HowToSection";
 
 const Login = () => {
 

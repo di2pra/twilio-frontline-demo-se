@@ -42,28 +42,33 @@ export interface ISetting {
 export interface ITemplate {
   display_name: string;
   templates: {
-    content: string;
-    whatsAppApproved: boolean;
+    contentApiSid: string;
+    friendly_name: string;
+    body: string;
+    variables: {
+      [key: string]: string
+    };
+    whatsappStatus: string | null
   }[]
 }
 
 export interface IData {
-  claim?: IClaim
-  configuration?: IConfiguration
-  setting?: ISetting
-  template?: ITemplate[]
-  conversationList?: IConversation[];
+  claim: IClaim
+  configuration: IConfiguration
+  setting: ISetting
+  template: ITemplate[]
+  conversationList: IConversation[];
 }
 
 export enum IBootstrapVariant {
-  PRIMARY = 'primary', 
-  SECONDARY = 'secondary', 
-  SUCCESS = 'success', 
-  DANGER = 'danger', 
-  WARNING = 'warning', 
-  INFO = 'info', 
-  DARK = 'dark', 
-  LIGHT = 'light', 
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  SUCCESS = 'success',
+  DANGER = 'danger',
+  WARNING = 'warning',
+  INFO = 'info',
+  DARK = 'dark',
+  LIGHT = 'light',
   LINK = 'link'
 }
 
@@ -73,19 +78,19 @@ export enum IConfirmationModalBtnValue {
 }
 
 export enum IWhatsAppCategory {
-  ACCOUNT_UPDATE = "ACCOUNT_UPDATE", 
-  PAYMENT_UPDATE = "PAYMENT_UPDATE", 
-  PERSONAL_FINANCE_UPDATE = "PERSONAL_FINANCE_UPDATE", 
-  SHIPPING_UPDATE = "SHIPPING_UPDATE", 
-  RESERVATION_UPDATE = "RESERVATION_UPDATE", 
-  ISSUE_RESOLUTION = "ISSUE_RESOLUTION", 
-  APPOINTMENT_UPDATE = "APPOINTMENT_UPDATE", 
-  TRANSPORTATION_UPDATE = "TRANSPORTATION_UPDATE", 
-  TICKET_UPDATE = "TICKET_UPDATE", 
-  ALERT_UPDATE = "ALERT_UPDATE", 
-  AUTO_REPLY = "AUTO_REPLY", 
-  TRANSACTIONAL = "TRANSACTIONAL", 
-  MARKETING = "MARKETING", 
+  ACCOUNT_UPDATE = "ACCOUNT_UPDATE",
+  PAYMENT_UPDATE = "PAYMENT_UPDATE",
+  PERSONAL_FINANCE_UPDATE = "PERSONAL_FINANCE_UPDATE",
+  SHIPPING_UPDATE = "SHIPPING_UPDATE",
+  RESERVATION_UPDATE = "RESERVATION_UPDATE",
+  ISSUE_RESOLUTION = "ISSUE_RESOLUTION",
+  APPOINTMENT_UPDATE = "APPOINTMENT_UPDATE",
+  TRANSPORTATION_UPDATE = "TRANSPORTATION_UPDATE",
+  TICKET_UPDATE = "TICKET_UPDATE",
+  ALERT_UPDATE = "ALERT_UPDATE",
+  AUTO_REPLY = "AUTO_REPLY",
+  TRANSACTIONAL = "TRANSACTIONAL",
+  MARKETING = "MARKETING",
   OTP = "OTP"
 }
 

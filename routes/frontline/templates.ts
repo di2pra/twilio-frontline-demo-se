@@ -41,7 +41,7 @@ const handleGetTemplatesByCustomerIdCallback = async (req: Request, res: Respons
         return res.status(404).send("Worker not found");
     }
 
-    const templates = await Template.get();
+    const templates = await Template.getWithContent();
     const configuration = await Configuration.get();
 
     const compiledTemplate = templates.map(templateCategory => {
@@ -52,7 +52,7 @@ const handleGetTemplatesByCustomerIdCallback = async (req: Request, res: Respons
                     return {
                         ...template,
                         ...{
-                            content: compileTemplate(template.content, customerDetails, workerDetails, configuration)
+                            content: compileTemplate(template.body, customerDetails, workerDetails, configuration)
                         }
                     }
                 })

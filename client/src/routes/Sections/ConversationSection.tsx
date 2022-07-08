@@ -1,20 +1,65 @@
-import { useContext } from "react";
-import { Alert, Button, Card, Table } from "react-bootstrap";
-import { UserContext } from "../../SecureLayout";
+import { useCallback, useContext, useState } from "react";
+import { Alert, Button, Card, Spinner, Table } from "react-bootstrap";
 import { MdDelete } from 'react-icons/md';
+import useApi from "../../hooks/useApi";
+import { UserContext } from "../../SecureLayout";
 import { IClaim, IConversation } from "../../Types";
 
 type Props = {
   claim?: IClaim;
   conversationList: IConversation[];
-  deleteAllHandler?: () => void;
 }
 
-const ConversationSection = ({ claim, conversationList, deleteAllHandler }: Props) => {
+const ConversationSection = ({ claim, conversationList }: Props) => {
 
+  const { deleteAllConversation } = useApi();
+
+  const [conversationListState, setConversationListState] = useState<IConversation[]>(conversationList);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
   const { loggedInUser } = useContext(UserContext);
 
-  if (conversationList.length === 0) {
+  const deleteAllHandler = useCallback(() => {
+
+    setIsProcessing(true);
+
+    deleteAllConversation()
+      .then(() => setConversationListState([]))
+      .catch((error) => setError(error.message))
+      .finally(() => setIsProcessing(false));
+
+  }, [deleteAllConversation]);
+
+
+
+  if (isProcessing) {
+    return (
+      <Card className="mb-3">
+        <Card.Header as="h3">Conversations</Card.Header>
+        <Card.Body>
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            <Spinner className="mb-3" animation="border" variant="danger" />
+            <h3>Processing...</h3>
+          </div>
+        </Card.Body>
+      </Card>
+    )
+  }
+
+  if (error) {
+
+    return (
+      <Card className="mb-3">
+        <Card.Header as="h3">Conversations</Card.Header>
+        <Card.Body>
+          <Alert variant="danger">{error}</Alert>
+        </Card.Body>
+      </Card>
+    )
+
+  }
+
+  if (conversationListState.length === 0) {
     return (
       <Card className="mb-3">
         <Card.Header as="h3">Conversations</Card.Header>
@@ -41,7 +86,7 @@ const ConversationSection = ({ claim, conversationList, deleteAllHandler }: Prop
           </thead>
           <tbody>
             {
-              conversationList.map((item, index) => {
+              conversationListState.map((item, index) => {
                 return (<tr key={index}>
                   <td>{item.sid}</td>
                   <td>{item.friendlyName}</td>

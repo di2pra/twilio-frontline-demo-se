@@ -1,18 +1,18 @@
 import { Express } from 'express';
-import OktaController from './controllers/oktaController.js';
-import TemplateController from './controllers/templateController.js';
-import ConfigurationController from './controllers/configurationController.js';
 import ClaimController from './controllers/claimController.js';
+import ConfigurationController from './controllers/configurationController.js';
+import ContentController from './controllers/contentController.js';
 import ConversationController from './controllers/conversationController.js';
-import SettingController from './controllers/settingController.js';
 import CustomizationController from './controllers/customizationController.js';
 import DataController from './controllers/dataController.js';
-import ContentController from './controllers/contentController.js';
+import OktaController from './controllers/oktaController.js';
+import SettingController from './controllers/settingController.js';
+import TemplateController from './controllers/templateController.js';
 
 export default (router: Express) => {
 
   const oktaController = new OktaController();
-  
+
 
   router.use('/api', oktaController.authenticationRequired);
 
@@ -24,13 +24,17 @@ export default (router: Express) => {
 
   router.post("/api/v1/setting", ClaimController.validateClaim, SettingController.setSelectedSetting);
 
-  router.post("/api/v1/template", ClaimController.validateClaim, TemplateController.add);
+  router.get("/api/v1/template", TemplateController.get);
+  router.post("/api/v1/template/content", ClaimController.validateClaim, TemplateController.addContentToTemplate);
+  router.delete("/api/v1/template/content", ClaimController.validateClaim, TemplateController.deleteContentFromTemplate);
 
+  router.get("/api/v1/configuration", ConfigurationController.get);
   router.post("/api/v1/configuration", ClaimController.validateClaim, ConfigurationController.add);
 
   router.post("/api/v1/claim", ClaimController.add);
   router.put("/api/v1/claim/:id", ClaimController.validateClaim, ClaimController.close);
 
+  router.get("/api/v1/conversation", ConversationController.get);
   router.delete("/api/v1/conversation", ClaimController.validateClaim, ConversationController.deleteAll);
 
   router.get("/customization/export", CustomizationController.export);

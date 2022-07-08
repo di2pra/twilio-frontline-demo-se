@@ -1,10 +1,10 @@
 import express from 'express';
-import { createServer } from 'http';
+import fileUpload from 'express-fileupload';
 import enforce from 'express-sslify';
+import { createServer } from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import routes from './routes/index.js';
-import fileUpload from 'express-fileupload';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

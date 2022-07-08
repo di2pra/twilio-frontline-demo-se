@@ -5,6 +5,7 @@ class Redis {
   private static client: RedisClientType;
 
   static async getClient() {
+
     if (Redis.client && Redis.client.isOpen) {
       return Redis.client;
     }
@@ -18,12 +19,13 @@ class Redis {
     });
 
     Redis.client.on('error', err => {
-      console.log('Redis Error ' + err);
+      console.log('Redis - ' + err);
     });
 
     await Redis.client.connect();
 
     return Redis.client;
+
   }
 }
 

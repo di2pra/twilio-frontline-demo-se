@@ -11,6 +11,7 @@ export interface IClaim {
 export default class Claim {
 
   static get = async () => {
+
     try {
       const request = await Postgres.getClient().query('SELECT * FROM claim ORDER BY id DESC LIMIT 1');
 
@@ -21,7 +22,7 @@ export default class Claim {
       }
 
     } catch (error: any) {
-      throw new ErrorHandler(500, `Internal DB Error : ${error.message}`)
+      throw new ErrorHandler(500, `Internal DB Error : ${error.message}`);
     }
   };
 
