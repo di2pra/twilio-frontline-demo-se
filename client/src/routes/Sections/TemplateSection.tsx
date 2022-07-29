@@ -112,7 +112,7 @@ const TemplateSection = ({ templateList, isEditable, refreshData }: { templateLi
                                 </td>
                                 <WhatsAppStatusCell whatsAppStatus={template.whatsappStatus} />
                                 {
-                                  isEditable ? <td><Button variant="danger" onClick={() => { deleteContentFromTemplateHandler(templateCatKey, template.contentApiSid) }}>Delete</Button></td> : null
+                                  isEditable ? <td><Button className="m-2" variant="danger" onClick={() => { deleteContentFromTemplateHandler(templateCatKey, template.contentApiSid) }}>Delete</Button></td> : null
                                 }
                               </tr>
                             )
